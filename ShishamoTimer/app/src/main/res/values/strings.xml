@@ -1,0 +1,15 @@
+<resources>
+<string name="app_name">ShishamoTimer</string>
+    <string name="main_menu_button_mealtimer">お食事タイマー</string>
+    <string name="main_menu_button_apptimer">アプリタイマー</string>
+    <string name="meal_timer_description">お食事タイマーです。\nTODO 説明</string>
+    <string name="app_timer_description">アプリのタイマーです。\nTODO 説明</string>
+    <string name="timeFormat">%1$d分</string>
+    <string name="start_eating">いただきます</string>
+    <string name="end_eating">ごちそうさま</string>
+    <string name="message_succeed">ごちそうさま、できた！</string>
+    <string name="message_failed">ごちそうさま、できなかった・・・</string>
+    <string name="button_label_back">戻る</string>
+    <string name="mealTimerDescription">食事時間を設定してください。</string>
+    <string name="min_for_debug">デバッグ用に30秒にする</string>
+</resources>

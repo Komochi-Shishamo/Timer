@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<animation-list
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:drawable="@drawable/droid_succ_0" android:duration="50" />
+    <item android:drawable="@drawable/droid_succ_1" android:duration="50" />
+    <item android:drawable="@drawable/droid_succ_2" android:duration="50" />
+    <item android:drawable="@drawable/droid_succ_3" android:duration="50" />
+    <item android:drawable="@drawable/droid_succ_4" android:duration="50" />
+    <item android:drawable="@drawable/droid_succ_5" android:duration="50" />
+    <item android:drawable="@drawable/droid_succ_6" android:duration="50" />
+    <item android:drawable="@drawable/droid_succ_7" android:duration="50" />
+    <item android:drawable="@drawable/droid_succ_8" android:duration="50" />
+    <item android:drawable="@drawable/droid_succ_9" android:duration="50" />
+    <item android:drawable="@drawable/droid_succ_8" android:duration="50" />
+    <item android:drawable="@drawable/droid_succ_7" android:duration="50" />
+    <item android:drawable="@drawable/droid_succ_6" android:duration="50" />
+    <item android:drawable="@drawable/droid_succ_5" android:duration="50" />
+    <item android:drawable="@drawable/droid_succ_4" android:duration="50" />
+    <item android:drawable="@drawable/droid_succ_3" android:duration="50" />
+    <item android:drawable="@drawable/droid_succ_2" android:duration="50" />
+    <item android:drawable="@drawable/droid_succ_1" android:duration="50" />
+    <item android:drawable="@drawable/droid_succ_0" android:duration="50" />
+    <item android:drawable="@drawable/droid_succ_1" android:duration="50" />
+    <item android:drawable="@drawable/droid_succ_4" android:duration="50" />
+    <item android:drawable="@drawable/droid_succ_5" android:duration="50" />
+    <item android:drawable="@drawable/droid_succ_6" android:duration="50" />
+    <item android:drawable="@drawable/droid_succ_7" android:duration="50" />
+    <item android:drawable="@drawable/droid_succ_8" android:duration="50" />
+    <item android:drawable="@drawable/droid_succ_9" android:duration="50" />
+    <item android:drawable="@drawable/droid_succ_8" android:duration="50" />
+    <item android:drawable="@drawable/droid_succ_7" android:duration="50" />
+    <item android:drawable="@drawable/droid_succ_6" android:duration="50" />
+    <item android:drawable="@drawable/droid_succ_5" android:duration="50" />
+    <item android:drawable="@drawable/droid_succ_4" android:duration="50" />
+    <item android:drawable="@drawable/droid_succ_3" android:duration="50" />
+    <item android:drawable="@drawable/droid_succ_2" android:duration="50" />
+    <item android:drawable="@drawable/droid_succ_1" android:duration="50" />
+    <item android:drawable="@drawable/droid_succ_0" android:duration="1000" />
+</animation-list>
