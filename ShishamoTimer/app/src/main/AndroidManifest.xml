@@ -15,9 +15,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".meal.StartMealActivity"
-            android:windowSoftInputMode="stateAlwaysHidden"/>
+        <activity
+            android:name=".meal.StartMealActivity"
+            android:windowSoftInputMode="stateAlwaysHidden" />
         <activity android:name=".meal.FinishMealActivity" />
+        <activity android:name=".stamp.StampActivity" />
+        <activity android:name=".app.AppMainActivity" />
+        <activity android:name=".app.AppNoticeActivity"></activity>
     </application>
 
 </manifest>

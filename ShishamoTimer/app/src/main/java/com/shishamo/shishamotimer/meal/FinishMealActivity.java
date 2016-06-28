@@ -4,10 +4,13 @@ import android.content.Intent;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.shishamo.shishamotimer.R;
+import com.shishamo.shishamotimer.stamp.StampActivity;
 
 public class FinishMealActivity extends AppCompatActivity {
     // 結果
@@ -45,6 +48,9 @@ public class FinishMealActivity extends AppCompatActivity {
         TextView message = (TextView)findViewById(R.id.resultLabel);
         message.setText(getResources().getString(mResultId));
 
+        // 表示するボタンを決定
+        Button btnBack = (Button)findViewById(R.id.btnBack);
+        Button btnStamp = (Button)findViewById(R.id.stampBtn);
         // 結果にあわせたアニメーションの表示と効果音の再生を行う
         ImageView img = (ImageView)findViewById(R.id.imageView);
         MealSoundPlayer player = MealSoundPlayer.getInstance();
@@ -52,11 +58,15 @@ public class FinishMealActivity extends AppCompatActivity {
             // 成功の場合
             // AnimationDrawableのXMLリソースを指定
             img.setBackgroundResource(R.drawable.succeed_finish_animation);
+            btnStamp.setVisibility(View.VISIBLE);
+            btnBack.setVisibility(View.GONE);
             player.playSucceed();
         }
         else {
             // 失敗した場合
             img.setBackgroundResource(R.drawable.fail_finish_animation);
+            btnBack.setVisibility(View.VISIBLE);
+            btnStamp.setVisibility(View.GONE);
             player.playFailed();
         }
         // AnimationDrawableを取得
@@ -71,5 +81,23 @@ public class FinishMealActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
+    }
+
+    /**
+     * スタンプボタン押下
+     * @param view
+     */
+    public void onStampButtonTapped(View view){
+        Intent intent = new Intent(this, StampActivity.class);
+        startActivity(intent);
+    }
+
+    /**
+     * 戻るボタンタップ
+     * @param view
+     */
+    public void onBtnBackTapped(View view) {
+        Intent intent = new Intent(this, StartMealActivity.class);
+        startActivity(intent);
     }
 }

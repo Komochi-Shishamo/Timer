@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<animation-list
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:drawable="@drawable/notice_finish_01" android:duration="50" />
+    <item android:drawable="@drawable/notice_finish_02" android:duration="50" />
+    <item android:drawable="@drawable/notice_finish_03" android:duration="50" />
+    <item android:drawable="@drawable/notice_finish_04" android:duration="50" />
+    <item android:drawable="@drawable/notice_finish_05" android:duration="50" />
+    <item android:drawable="@drawable/notice_finish_06" android:duration="50" />
+    <item android:drawable="@drawable/notice_finish_07" android:duration="50" />
+    <item android:drawable="@drawable/notice_finish_08" android:duration="50" />
+    <item android:drawable="@drawable/notice_finish_09" android:duration="50" />
+    <item android:drawable="@drawable/notice_finish_10" android:duration="50" />
+    <item android:drawable="@drawable/notice_finish_05" android:duration="50" />
+    <item android:drawable="@drawable/notice_finish_06" android:duration="50" />
+    <item android:drawable="@drawable/notice_finish_07" android:duration="50" />
+    <item android:drawable="@drawable/notice_finish_08" android:duration="50" />
+    <item android:drawable="@drawable/notice_finish_09" android:duration="50" />
+    <item android:drawable="@drawable/notice_finish_10" android:duration="50" />
+    <item android:drawable="@drawable/notice_finish_05" android:duration="50" />
+    <item android:drawable="@drawable/notice_finish_06" android:duration="50" />
+    <item android:drawable="@drawable/notice_finish_07" android:duration="50" />
+    <item android:drawable="@drawable/notice_finish_08" android:duration="50" />
+    <item android:drawable="@drawable/notice_finish_09" android:duration="50" />
+    <item android:drawable="@drawable/notice_finish_10" android:duration="50" />
+    <item android:drawable="@drawable/notice_finish_08" android:duration="50" />
+    <item android:drawable="@drawable/notice_finish_07" android:duration="50" />
+    <item android:drawable="@drawable/notice_finish_06" android:duration="50" />
+    <item android:drawable="@drawable/notice_finish_05" android:duration="50" />
+    <item android:drawable="@drawable/notice_finish_04" android:duration="50" />
+    <item android:drawable="@drawable/notice_finish_03" android:duration="50" />
+    <item android:drawable="@drawable/notice_finish_02" android:duration="50" />
+    <item android:drawable="@drawable/notice_finish_01" android:duration="1000" />
+</animation-list>

@@ -26,13 +26,27 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="0dp"
-        android:text="@string/button_label_back"
-        android:id="@+id/btnBack"
+        android:text="@string/stamp"
+        android:id="@+id/stampBtn"
         android:enabled="true"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_gravity="bottom|center"
-        android:layout_weight="0.7"
-        android:nestedScrollingEnabled="false" />
+        android:layout_weight="0.5"
+        android:nestedScrollingEnabled="false"
+        android:onClick="onStampButtonTapped" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/button_label_back"
+        android:id="@+id/btnBack"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="bottom|center"
+        android:layout_weight="0.5"
+        android:nestedScrollingEnabled="false"
+        android:onClick="onBtnBackTapped"
+        android:visibility="gone" />
 
 </LinearLayout>
