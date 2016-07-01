@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.NumberPicker;
 
 import com.shishamo.shishamotimer.R;
+import com.shishamo.shishamotimer.common.ActivityStack;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -165,7 +166,6 @@ public class StartMealActivity extends AppCompatActivity  {
             tickTime = seconds / foods.size() - 1000;
         }
 
-
         // タイマー開始
         mEatingTimer = new EatingCountDownTimer(seconds, tickTime, this);
         mEatingTimer.start();
@@ -184,6 +184,9 @@ public class StartMealActivity extends AppCompatActivity  {
         Intent intent = new Intent(this, FinishMealActivity.class);
         intent.putExtra("MESSAGE",R.string.message_succeed);
         startActivity(intent);
+
+        // Activity詰める
+        ActivityStack.stackHistory(this);
     }
 
     /**

@@ -6,15 +6,15 @@ import io.realm.RealmObject;
 
 /**
  * スタンプカードクラス
- * 今のところ、ID:1,inStamp:1,ID:1,inStamp:2,,,,ID:2,inStamp:1,,,のような持ち方をします。
+ *
  */
 public class StampCard extends RealmObject {
 
     // 識別するID
     private long id;
 
-    // スタンプ番号
-    private Integer inStamp;
+    // スタンプ個数
+    private long stampNo;
 
     // スタンプ日付
     private Date stampDate;
@@ -36,19 +36,19 @@ public class StampCard extends RealmObject {
     }
 
     /**
-     * スタンプ番号を返却する
+     * スタンプ個数を取得する
      * @return
      */
-    public Integer getInStamp() {
-        return inStamp;
+    public long getStampNo() {
+        return stampNo;
     }
 
     /**
-     * スタンプ番号を設定する
-     * @param inStamp
+     * スタンプ個数を設定する
+     * @param stampNo
      */
-    public void setInStamp(Integer inStamp) {
-        this.inStamp = inStamp;
+    public void setStampNo(long stampNo) {
+        this.stampNo = stampNo;
     }
 
     /**
@@ -66,4 +66,5 @@ public class StampCard extends RealmObject {
     public void setStampDate(Date stampDate) {
         this.stampDate = stampDate;
     }
+
 }

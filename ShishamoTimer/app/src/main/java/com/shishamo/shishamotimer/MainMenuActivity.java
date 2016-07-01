@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
 import com.shishamo.shishamotimer.app.AppMainActivity;
+import com.shishamo.shishamotimer.common.ActivityStack;
 import com.shishamo.shishamotimer.meal.StartMealActivity;
 
 public class MainMenuActivity extends AppCompatActivity {
@@ -24,6 +25,9 @@ public class MainMenuActivity extends AppCompatActivity {
         // 次画面へ遷移
         Intent intent = new Intent(this, StartMealActivity.class);
         startActivity(intent);
+
+        // Activity詰める
+        ActivityStack.stackHistory(this);
     }
 
     /**

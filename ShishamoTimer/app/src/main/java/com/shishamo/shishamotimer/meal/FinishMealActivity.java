@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.shishamo.shishamotimer.R;
+import com.shishamo.shishamotimer.common.ActivityStack;
 import com.shishamo.shishamotimer.stamp.StampActivity;
 
 public class FinishMealActivity extends AppCompatActivity {
@@ -88,8 +89,11 @@ public class FinishMealActivity extends AppCompatActivity {
      * @param view
      */
     public void onStampButtonTapped(View view){
+        // スタンプ画面へ
         Intent intent = new Intent(this, StampActivity.class);
         startActivity(intent);
+        // Activity詰める
+        ActivityStack.stackHistory(this);
     }
 
     /**
