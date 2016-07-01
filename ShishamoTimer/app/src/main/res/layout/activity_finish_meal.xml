@@ -34,7 +34,10 @@
         android:layout_gravity="bottom|center"
         android:layout_weight="0.5"
         android:nestedScrollingEnabled="false"
-        android:onClick="onStampButtonTapped" />
+        android:onClick="onStampButtonTapped"
+        android:background="@drawable/button_stateful"
+        android:textColor="@android:color/primary_text_dark"
+        android:layout_marginBottom="10dp" />
 
     <Button
         android:layout_width="wrap_content"
@@ -47,6 +50,9 @@
         android:layout_weight="0.5"
         android:nestedScrollingEnabled="false"
         android:onClick="onBtnBackTapped"
-        android:visibility="gone" />
+        android:visibility="gone"
+        android:background="@drawable/button_stateful"
+        android:textColor="@android:color/primary_text_dark"
+        android:layout_marginBottom="10dp" />
 
 </LinearLayout>

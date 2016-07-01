@@ -52,8 +52,8 @@ public class StartMealActivity extends AppCompatActivity  {
         mTimePicker = (NumberPicker) findViewById(R.id.numberPicker);
         setNumberPicker(mTimePicker, 5, 60, 5, R.string.timeFormat);
 
-        // 初期値は20分に設定
-        mTimePicker.setValue(3);
+        // 初期値は30分に設定
+        mTimePicker.setValue(5);
 
         // キーボードは非表示にする
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
@@ -165,6 +165,7 @@ public class StartMealActivity extends AppCompatActivity  {
             // ごはん画像の数にあわせてTickerを計算
             tickTime = seconds / foods.size() - 1000;
         }
+        mTimePicker.setEnabled(false);
 
         // タイマー開始
         mEatingTimer = new EatingCountDownTimer(seconds, tickTime, this);

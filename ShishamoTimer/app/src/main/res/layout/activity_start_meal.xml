@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout  xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:bootstrap="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     tools:context="com.shishamo.shishamotimer.meal.StartMealActivity">
 
@@ -38,34 +39,43 @@
             android:text="@string/min_for_debug"
             android:id="@+id/chkDebug"
             android:checked="false"
-            android:clickable="true" />
+            android:clickable="true"
+            android:layout_gravity="center_horizontal" />
         <LinearLayout
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="0dp"
                 android:orientation="horizontal"
-                android:layout_weight="1">
+                android:layout_weight="1"
+            android:layout_gravity="center_horizontal">
 
                 <Button
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:text="@string/start_eating"
                     android:id="@+id/btnStart"
                     android:enabled="true"
                     android:textStyle="bold"
                     android:onClick="onStartButtonTapped"
-                    android:layout_gravity="center" />
+                    android:layout_gravity="center"
+                    android:layout_margin="5dp"
+                    android:background="@drawable/button_stateful"
+                    android:textColor="@android:color/primary_text_dark" />
 
                 <Button
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:text="@string/end_eating"
                     android:id="@+id/btnEnd"
                     android:textStyle="bold"
                     android:enabled="false"
                     android:onClick="onEndButtonTapped"
-                    android:layout_gravity="center" />
+                    android:layout_gravity="center"
+                    android:visibility="visible"
+                    android:layout_margin="5dp"
+                    android:background="@drawable/button_stateful"
+                    android:textColor="@android:color/primary_text_dark" />
             </LinearLayout>
     </LinearLayout>
 
