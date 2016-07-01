@@ -3,6 +3,7 @@ package com.shishamo.shishamotimer.stamp;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.GridView;
 
@@ -142,5 +143,14 @@ public class StampActivity extends AppCompatActivity {
         ActivityStack.stackHistory(this);
         // Activity全削除
         ActivityStack.removeHistory();
+    }
+    
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event){
+        if(keyCode != KeyEvent.KEYCODE_BACK){
+            return super.onKeyDown(keyCode,event);
+        }else{
+            return false;
+        }
     }
 }
