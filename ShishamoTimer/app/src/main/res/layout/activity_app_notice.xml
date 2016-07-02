@@ -21,13 +21,14 @@
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:text="@string/messageFinished"
             android:id="@+id/textView3"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true" />
+            android:textSize="36dp"
+            android:textAlignment="center"/>
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_gravity="center"
             android:id="@+id/imageView" />
 
     </LinearLayout>
