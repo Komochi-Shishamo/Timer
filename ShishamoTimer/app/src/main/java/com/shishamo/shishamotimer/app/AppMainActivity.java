@@ -12,6 +12,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.shishamo.shishamotimer.R;
+import com.shishamo.shishamotimer.common.ActivityStack;
 
 public class AppMainActivity extends AppCompatActivity {
     // メインアクティビティ
@@ -32,6 +33,8 @@ public class AppMainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_app_main);
+        // Activity詰める
+        ActivityStack.stackHistory(this);
     }
     @Override
     protected void onResume() {

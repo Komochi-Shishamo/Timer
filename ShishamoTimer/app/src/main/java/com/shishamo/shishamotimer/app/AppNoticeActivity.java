@@ -3,9 +3,11 @@ package com.shishamo.shishamotimer.app;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 import android.widget.ImageView;
 
 import com.shishamo.shishamotimer.R;
+import com.shishamo.shishamotimer.common.ActivityStack;
 
 public class AppNoticeActivity extends AppCompatActivity {
 
@@ -26,5 +28,12 @@ public class AppNoticeActivity extends AppCompatActivity {
         AnimationDrawable frameAnimation = (AnimationDrawable) img.getBackground();
         // アニメーションの開始
         frameAnimation.start();
+    }
+
+    public void onOffBtnTapped(View view){
+        // Activity詰める
+        ActivityStack.stackHistory(this);
+        // Activity全削除
+        ActivityStack.removeHistory();
     }
 }
