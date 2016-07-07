@@ -16,8 +16,9 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:orientation="horizontal"
-            android:layout_weight="1">
+            android:orientation="vertical"
+            android:layout_weight="1.5"
+            android:gravity="center_horizontal">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -25,12 +26,14 @@
                 android:id="@+id/textView"
                 android:singleLine="false"
                 android:text="@string/mealTimerDescription"
-                android:gravity="center_vertical" />
+                android:gravity="center_vertical"
+                android:layout_weight="0.5" />
 
             <NumberPicker
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/numberPicker" />
+                android:id="@+id/numberPicker"
+                android:layout_weight="0.5" />
 
         </LinearLayout>
         <CheckBox

@@ -42,6 +42,30 @@
                 />
         </shape>
     </item>
+    <!--
+    <item android:state_enabled="false">
+        <shape android:shape="rectangle">
+            <corners
+                android:radius="10dip"
+                android:color="#ffffff"/>
+            <gradient
+                android:angle="90"
+                android:startColor="#669999"
+                android:endColor="#CCCCCC"
+                />
+            <padding
+                android:left="25dip"
+                android:top="10dip"
+                android:right="25dip"
+                android:bottom="15dip"
+                />
+            <stroke
+                android:width="2dip"
+                android:color="#CCCCCC"
+                />
+        </shape>
+    </item>
+    -->
     <item >
         <shape android:shape="rectangle">
             <corners android:radius="10dip"/>
