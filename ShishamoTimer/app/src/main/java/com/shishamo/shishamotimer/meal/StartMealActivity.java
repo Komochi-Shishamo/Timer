@@ -42,7 +42,6 @@ public class StartMealActivity extends AppCompatActivity  {
 
         // 効果音の準備をします。
         player = MealSoundPlayer.getInstance();
-        player.loadSound(getApplicationContext());
 
         // 食べ物画像の準備をします。
         loadImage();
@@ -59,10 +58,18 @@ public class StartMealActivity extends AppCompatActivity  {
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
     }
 
+    /**
+     *
+     */
     @Override
     protected void onResume() {
         super.onResume();
+        player.loadSound(getApplicationContext());
     }
+
+    /**
+     * 画像を動的にランダム表示します。
+     */
     private void loadImage() {
         FoodFactory factory = FoodFactory.getInstance();
         // ごはん
@@ -140,6 +147,7 @@ public class StartMealActivity extends AppCompatActivity  {
             mEatingTimer.cancel();
             mEatingTimer = null;
         }
+        player.stopSound();
         player.unloadSounds();
     }
 
@@ -181,15 +189,23 @@ public class StartMealActivity extends AppCompatActivity  {
         mEatingTimer.cancel();
         mEatingTimer = null;
 
+        // 結果画面へ
+        GoNextIntent(R.string.message_succeed);
+    }
+
+    /**
+     * 次の画面へ遷移します。
+     * @param message 次画面で表示するメッセージID
+     */
+    public void GoNextIntent(int message) {
         // 次画面へ遷移
         Intent intent = new Intent(this, FinishMealActivity.class);
-        intent.putExtra("MESSAGE",R.string.message_succeed);
+        intent.putExtra("MESSAGE",message);
         startActivity(intent);
 
         // Activity詰める
         ActivityStack.stackHistory(this);
     }
-
     /**
      * 次に対象となる画像を取得します。
      * @return
