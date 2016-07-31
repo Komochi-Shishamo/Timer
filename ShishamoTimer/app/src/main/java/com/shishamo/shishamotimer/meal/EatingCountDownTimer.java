@@ -2,7 +2,6 @@ package com.shishamo.shishamotimer.meal;
 
 import android.animation.ObjectAnimator;
 import android.content.Context;
-import android.content.Intent;
 import android.os.CountDownTimer;
 import android.widget.ImageView;
 
@@ -53,8 +52,6 @@ public class EatingCountDownTimer extends CountDownTimer {
     @Override
     public void onFinish() {
         // 次画面へ遷移
-        Intent intent = new Intent(context, FinishMealActivity.class);
-        intent.putExtra("MESSAGE", R.string.message_failed);
-        context.startActivity(intent);
+        ((StartMealActivity)context).GoNextIntent(R.string.message_failed);
     }
 }

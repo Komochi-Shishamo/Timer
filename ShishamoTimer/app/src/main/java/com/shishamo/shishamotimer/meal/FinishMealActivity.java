@@ -3,6 +3,7 @@ package com.shishamo.shishamotimer.meal;
 import android.content.Intent;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -32,13 +33,6 @@ public class FinishMealActivity extends AppCompatActivity {
     }
 
     /**
-     * アプリ開始イベント
-     */
-    @Override
-    protected void onStart() {
-        super.onStart();
-    }
-    /**
      * 最前面表示のイベント
      */
     @Override
@@ -54,11 +48,13 @@ public class FinishMealActivity extends AppCompatActivity {
         message.setText(getResources().getString(mResultId));
 
         // 表示するボタンを決定
-        Button btnBack = (Button)findViewById(R.id.btnBack);
+        FloatingActionButton btnBack = (FloatingActionButton)findViewById(R.id.btnBack);
         Button btnStamp = (Button)findViewById(R.id.stampBtn);
         // 結果にあわせたアニメーションの表示と効果音の再生を行う
         ImageView img = (ImageView)findViewById(R.id.imageView);
+        // 前画面の効果音再生が続いている場合は停止状態にします。
         MealSoundPlayer player = MealSoundPlayer.getInstance();
+        player.stopSound();
         if (mResultId == R.string.message_succeed) {
             // 成功の場合
             // AnimationDrawableのXMLリソースを指定
@@ -91,7 +87,7 @@ public class FinishMealActivity extends AppCompatActivity {
     }
 
     /**
-     *
+     * 一時停止
      */
     @Override
     protected void onPause() {
@@ -103,6 +99,9 @@ public class FinishMealActivity extends AppCompatActivity {
      * @param view
      */
     public void onStampButtonTapped(View view){
+        // 再生中の効果音を止める
+        MealSoundPlayer.getInstance().stopSound();
+
         // スタンプ画面へ
         Intent intent = new Intent(this, StampActivity.class);
         startActivity(intent);
@@ -111,11 +110,12 @@ public class FinishMealActivity extends AppCompatActivity {
     }
 
     /**
-     * 戻るボタンタップ
+     * 終了ボタンタップ
      * @param view
      */
-    public void onBtnBackTapped(View view) {
-        Intent intent = new Intent(this, StartMealActivity.class);
-        startActivity(intent);
+    public void onBtnEndTapped(View view) {
+        finish();
+        // メインメニューに戻る
+        ActivityStack.removeHistory();
     }
 }

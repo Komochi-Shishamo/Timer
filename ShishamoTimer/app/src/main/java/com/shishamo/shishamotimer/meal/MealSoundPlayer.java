@@ -23,6 +23,12 @@ public class MealSoundPlayer {
     private SoundPool mSoundPool;
     // 再生する効果音の格納庫
     private HashMap<SoundType, Integer> soundPoolMap;
+    // ロードした効果音の数
+    private int loadCounter = 0;
+    // 効果音利用可能状態
+    private boolean available = false;
+    // 再生中のストリームID
+    private int streamId;
 
     // 効果音の種類
     private enum SoundType {
@@ -38,7 +44,6 @@ public class MealSoundPlayer {
     @SuppressWarnings("deprecation")
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     private MealSoundPlayer() {
-
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
             // API Level 21以降は非推奨
             mSoundPool = new SoundPool(3,  AudioManager.STREAM_MUSIC, 0);
@@ -55,6 +60,23 @@ public class MealSoundPlayer {
                     .build();
         }
         soundPoolMap = new HashMap<SoundType, Integer>();
+        available = false;
+        mSoundPool.setOnLoadCompleteListener(new SoundPool.OnLoadCompleteListener() {
+            /**
+             *  効果音の読み込み終了時
+             * @param soundPool
+             * @param sampleId
+             * @param status
+             */
+            @Override
+            public void onLoadComplete(SoundPool soundPool, int sampleId, int status) {
+                loadCounter++;
+                if (loadCounter == 3) {
+                    // すべてロードしたら再生可能とする
+                    available = true;
+                }
+            }
+        });
     }
 
     /**
@@ -67,53 +89,65 @@ public class MealSoundPlayer {
         }
         return mPlayer;
     }
+
     /**
      * 効果音を読み込みます。
      * 読み込みには時間がかかるので最初に呼び出すこと
      */
-    @SuppressWarnings("deprecation")
     public void loadSound(Context context) {
-        //  一時的に追加　←　今後の対応要
-        mSoundPool = new SoundPool(3,  AudioManager.STREAM_MUSIC, 0);
+        if (soundPoolMap.isEmpty()) {
+            soundPoolMap.put(SoundType.KIRAKIRA, mSoundPool.load(context, R.raw.ta_ta_kirarara01, 1));
+            soundPoolMap.put(SoundType.SUCCEED, mSoundPool.load(context, R.raw.muci_hono_04, 1));
+            soundPoolMap.put(SoundType.FAILED, mSoundPool.load(context, R.raw.muci_hono_01, 1));
+        }
+    }
 
-        soundPoolMap.put(SoundType.KIRAKIRA, mSoundPool.load(context, R.raw.ta_ta_kirarara01, 1));
-        soundPoolMap.put(SoundType.SUCCEED, mSoundPool.load(context, R.raw.muci_hono_04, 1));
-        soundPoolMap.put(SoundType.FAILED, mSoundPool.load(context, R.raw.muci_hono_01, 1));
+    /**
+     * すべての効果音をメモリからリリースします。
+     */
+    public void  unloadSounds() {
+        if (mSoundPool != null) {
+            for (int id : soundPoolMap.values()) {
+                mSoundPool.unload(id);
+            }
+            mSoundPool.release();
+            soundPoolMap.clear();
+        }
+        available = false;
+        loadCounter = 0;
     }
 
     /**
      * キラキラ音楽を再生します。
      */
     public void playKirakira() {
-        mSoundPool.play(soundPoolMap.get(SoundType.KIRAKIRA), 1.0f, 1.0f, 0, 1, 1.0f);
+        if (available) {
+            streamId = mSoundPool.play(soundPoolMap.get(SoundType.KIRAKIRA), 1.0f, 1.0f, 0, 1, 1.0f);
+        }
     }
 
     /**
      * 成功時の効果音を再生します。
      */
     public void playSucceed() {
-        mSoundPool.play(soundPoolMap.get(SoundType.SUCCEED), 1.0f, 1.0f, 0, 1, 1.0f);
+        if (available) {
+            streamId = mSoundPool.play(soundPoolMap.get(SoundType.SUCCEED), 1.0f, 1.0f, 0, 1, 1.0f);
+        }
     }
 
     /**
      * 失敗時の効果音を再生します。
      */
     public void playFailed() {
-        mSoundPool.play(soundPoolMap.get(SoundType.FAILED), 1.0f, 1.0f, 0, 1, 1.0f);
+        if (available && mSoundPool != null) {
+            mSoundPool.play(soundPoolMap.get(SoundType.FAILED), 1.0f, 1.0f, 0, 1, 1.0f);
+        }
     }
 
-    /**
-     * すべての効果音をメモリからリリースします。
-     */
-    @SuppressWarnings("deprecation")
-    public void  unloadSounds() {
-        //  一時的に追加　←　今後の対応要
-        mSoundPool = new SoundPool(3,  AudioManager.STREAM_MUSIC, 0);
-
-        for (int id : soundPoolMap.values()) {
-            mSoundPool.unload(id);
+    public void stopSound() {
+        if (streamId != 0) {
+            mSoundPool.stop(streamId);
         }
-        mSoundPool.release();
-        mSoundPool = null;
+        streamId = 0;
     }
 }
