@@ -20,7 +20,8 @@
             android:windowSoftInputMode="stateAlwaysHidden" />
         <activity android:name=".meal.FinishMealActivity" />
         <activity android:name=".stamp.StampActivity" />
-        <activity android:name=".app.AppMainActivity" />
+        <activity android:name=".app.AppMainActivity"
+            android:windowSoftInputMode="stateAlwaysHidden" />
         <activity android:name=".app.AppNoticeActivity"></activity>
     </application>
 

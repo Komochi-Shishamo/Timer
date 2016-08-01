@@ -166,7 +166,7 @@ public class StartMealActivity extends AppCompatActivity  {
         // 入力時間とTicker設定（デフォルト30秒・5秒おき）
         int seconds = 30 * 1000;
         int tickTime = 5000;
-                CheckBox checkBox = (CheckBox) findViewById(R.id.chkDebug);
+        CheckBox checkBox = (CheckBox) findViewById(R.id.chkDebug);
         if (!checkBox.isChecked()) {
             // Debugオフの場合は設定した時間
             seconds = (mTimePicker.getValue() + 1) * 5 * 60 * 1000;
@@ -193,6 +193,8 @@ public class StartMealActivity extends AppCompatActivity  {
         GoNextIntent(R.string.message_succeed);
     }
 
+    public void onStopButtonTapped(View view) {
+    }
     /**
      * 次の画面へ遷移します。
      * @param message 次画面で表示するメッセージID

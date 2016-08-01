@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.CheckBox;
 import android.widget.NumberPicker;
 import android.widget.TextView;
@@ -35,6 +36,8 @@ public class AppMainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_app_main);
         // Activity詰める
         ActivityStack.stackHistory(this);
+        // キーボードは非表示にする
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
     }
     @Override
     protected void onResume() {

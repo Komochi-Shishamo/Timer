@@ -15,6 +15,8 @@ public class EatingCountDownTimer extends CountDownTimer {
     // タイマー処理で使う画像
     private Context context;
     private long firstInterval;
+    // 残り時間
+    private long countMillis;
     /**
      * コンストラクタ
      * @param millisInFuture
@@ -27,13 +29,15 @@ public class EatingCountDownTimer extends CountDownTimer {
         // 最初に呼ばれる残り時間
         this.firstInterval = millisInFuture - countDownInterval;
     }
-
     /**
      * 一定時間後のイベント処理
      * @param millisUntilFinished
      */
     @Override
     public void onTick(long millisUntilFinished) {
+        // 残り時間を退避
+        countMillis = millisUntilFinished;
+
         if (millisUntilFinished > this.firstInterval) {
             // 初回にいきなり呼ばれるので無視する
             return;
