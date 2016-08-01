@@ -5,6 +5,7 @@ import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -15,6 +16,9 @@ import com.shishamo.shishamotimer.common.ActivityStack;
 import com.shishamo.shishamotimer.stamp.StampActivity;
 
 public class FinishMealActivity extends AppCompatActivity {
+
+    private final static String TAG = FinishMealActivity.class.getSimpleName();
+
     // 結果
     private int mResultId;
 
@@ -54,14 +58,24 @@ public class FinishMealActivity extends AppCompatActivity {
         if (mResultId == R.string.message_succeed) {
             // 成功の場合
             // AnimationDrawableのXMLリソースを指定
-            img.setBackgroundResource(R.drawable.succeed_finish_animation);
+            try {
+                img.setBackgroundResource(R.drawable.succeed_finish_animation);
+            } catch (Exception e) {
+                img.setImageDrawable(null);
+                Log.e(TAG, "ごちそうさまアニメーションで失敗", e);
+            }
             btnStamp.setVisibility(View.VISIBLE);
             btnBack.setVisibility(View.GONE);
             player.playSucceed();
         }
         else {
             // 失敗した場合
-            img.setBackgroundResource(R.drawable.fail_finish_animation);
+            try {
+                img.setBackgroundResource(R.drawable.fail_finish_animation);
+            } catch (Exception e) {
+                img.setImageDrawable(null);
+                Log.e(TAG, "ごちそうさまできなかったアニメーションで失敗", e);
+            }
             btnBack.setVisibility(View.VISIBLE);
             btnStamp.setVisibility(View.GONE);
             player.playFailed();
