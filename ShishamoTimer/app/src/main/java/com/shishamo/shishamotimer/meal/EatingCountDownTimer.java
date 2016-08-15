@@ -6,6 +6,7 @@ import android.os.CountDownTimer;
 import android.widget.ImageView;
 
 import com.shishamo.shishamotimer.R;
+import com.shishamo.shishamotimer.common.Globals;
 
 /**
  * 食事のカウントダウンタイマー
@@ -13,7 +14,7 @@ import com.shishamo.shishamotimer.R;
  */
 public class EatingCountDownTimer extends CountDownTimer {
     // タイマー処理で使う画像
-    private Context context;
+    private StartMealActivity context;
     private long firstInterval;
     // 残り時間
     private long countMillis;
@@ -25,7 +26,7 @@ public class EatingCountDownTimer extends CountDownTimer {
      */
     public EatingCountDownTimer(long millisInFuture, long countDownInterval, Context context) {
         super(millisInFuture, countDownInterval);
-        this.context = context;
+        this.context = (StartMealActivity)context;
         // 最初に呼ばれる残り時間
         this.firstInterval = millisInFuture - countDownInterval;
     }
@@ -42,12 +43,12 @@ public class EatingCountDownTimer extends CountDownTimer {
             // 初回にいきなり呼ばれるので無視する
             return;
         }
-        ImageView img = ((StartMealActivity)context).getNextFoods();
+        ImageView img = context.getNextFoods();
         // 順番に画像をフェードアウトしていく
         ObjectAnimator alpha = ObjectAnimator.ofFloat(img, "alpha", 1f, 0f);
         alpha.setDuration(5000);
         alpha.start();
-        ((StartMealActivity)context).playKirakira();
+        context.playKirakira();
     }
 
     /**
@@ -56,6 +57,6 @@ public class EatingCountDownTimer extends CountDownTimer {
     @Override
     public void onFinish() {
         // 次画面へ遷移
-        ((StartMealActivity)context).GoNextIntent(R.string.message_failed);
+        context.GoNextIntent();
     }
 }

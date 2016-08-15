@@ -12,6 +12,7 @@ import android.widget.NumberPicker;
 
 import com.shishamo.shishamotimer.R;
 import com.shishamo.shishamotimer.common.ActivityStack;
+import com.shishamo.shishamotimer.common.Globals;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -30,6 +31,8 @@ public class StartMealActivity extends AppCompatActivity  {
     private int counter = -1;
     // 効果音再生
     private MealSoundPlayer player;
+    // アプリ共有変数
+    Globals globals;
 
     /**
      * 起動時のイベント処理
@@ -39,6 +42,10 @@ public class StartMealActivity extends AppCompatActivity  {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start_meal);
+
+        // グローバル変数の取得
+        globals = (Globals)this.getApplication();
+        globals.mealResultId = R.string.message_failed;
 
         // 効果音の準備をします。
         player = MealSoundPlayer.getInstance();
@@ -141,14 +148,13 @@ public class StartMealActivity extends AppCompatActivity  {
      */
     @Override
     public void finish() {
-        super.finish();
-
         if (mEatingTimer != null) {
             mEatingTimer.cancel();
             mEatingTimer = null;
         }
         player.stopSound();
         player.unloadSounds();
+        super.finish();
     }
 
     /**
@@ -186,23 +192,27 @@ public class StartMealActivity extends AppCompatActivity  {
      */
     public void onEndButtonTapped(View view) {
         // タイマーをとめる
-        mEatingTimer.cancel();
+        if (mEatingTimer != null) {
+            mEatingTimer.cancel();
+        }
         mEatingTimer = null;
 
         // 結果画面へ
-        GoNextIntent(R.string.message_succeed);
+        if (globals == null) {
+            globals = (Globals) this.getApplication();
+        }
+        globals.mealResultId = R.string.message_succeed;
+        GoNextIntent();
     }
 
     public void onStopButtonTapped(View view) {
     }
     /**
      * 次の画面へ遷移します。
-     * @param message 次画面で表示するメッセージID
      */
-    public void GoNextIntent(int message) {
+    public void GoNextIntent() {
         // 次画面へ遷移
         Intent intent = new Intent(this, FinishMealActivity.class);
-        intent.putExtra("MESSAGE",message);
         startActivity(intent);
 
         // Activity詰める

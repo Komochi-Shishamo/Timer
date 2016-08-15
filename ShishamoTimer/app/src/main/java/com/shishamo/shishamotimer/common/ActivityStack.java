@@ -1,6 +1,8 @@
 package com.shishamo.shishamotimer.common;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
+import android.os.Build;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,9 +24,17 @@ public class ActivityStack {
     /**
      * Activityをリストから除く。
      */
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     public static void removeHistory() {
         for(Activity stack : stackList){
-            stack.finish();
+            if (stack == null) continue;
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+                stack.finish();
+            }
+            else{
+                // 完全終了させる
+                stack.finishAndRemoveTask();
+            }
         }
     }
 

@@ -22,13 +22,13 @@ public class MealSoundPlayer {
     // SoundPoolオブジェクト
     private SoundPool mSoundPool;
     // 再生する効果音の格納庫
-    private HashMap<SoundType, Integer> soundPoolMap;
+    private HashMap<SoundType, Integer> soundPoolMap = new HashMap<SoundType, Integer>();
     // ロードした効果音の数
     private int loadCounter = 0;
     // 効果音利用可能状態
     private boolean available = false;
     // 再生中のストリームID
-    private int streamId;
+    private int streamId = 0;
 
     // 効果音の種類
     private enum SoundType {
@@ -59,7 +59,6 @@ public class MealSoundPlayer {
                     .setMaxStreams(3)
                     .build();
         }
-        soundPoolMap = new HashMap<SoundType, Integer>();
         available = false;
         mSoundPool.setOnLoadCompleteListener(new SoundPool.OnLoadCompleteListener() {
             /**
@@ -144,6 +143,9 @@ public class MealSoundPlayer {
         }
     }
 
+    /**
+     * 音楽の再生をとめます。
+     */
     public void stopSound() {
         if (streamId != 0) {
             mSoundPool.stop(streamId);

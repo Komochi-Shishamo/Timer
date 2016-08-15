@@ -13,14 +13,12 @@ import android.widget.TextView;
 
 import com.shishamo.shishamotimer.R;
 import com.shishamo.shishamotimer.common.ActivityStack;
+import com.shishamo.shishamotimer.common.Globals;
 import com.shishamo.shishamotimer.stamp.StampActivity;
 
 public class FinishMealActivity extends AppCompatActivity {
 
     private final static String TAG = FinishMealActivity.class.getSimpleName();
-
-    // 結果
-    private int mResultId;
 
     /**
      * アプリ起動イベント
@@ -39,9 +37,9 @@ public class FinishMealActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
-        // 前画面からの結果を取得
-        Intent intent = getIntent();
-        mResultId = intent.getIntExtra("MESSAGE",0);
+        // 結果を取得
+        Globals globals = (Globals)this.getApplication();
+        int mResultId = globals.mealResultId;
 
         // 結果テキストを表示
         TextView message = (TextView)findViewById(R.id.resultLabel);
@@ -114,8 +112,8 @@ public class FinishMealActivity extends AppCompatActivity {
      * @param view
      */
     public void onBtnEndTapped(View view) {
-        finish();
-        // メインメニューに戻る
+        // Activity終了
+        ActivityStack.stackHistory(this);
         ActivityStack.removeHistory();
     }
 }
