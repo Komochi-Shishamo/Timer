@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.NumberPicker;
 
@@ -52,7 +53,6 @@ public class StartMealActivity extends AppCompatActivity  {
 
         // 食べ物画像の準備をします。
         loadImage();
-        setTouchImageListener();
 
         // タイマー時刻の初期化
         mTimePicker = (NumberPicker) findViewById(R.id.numberPicker);
@@ -108,11 +108,15 @@ public class StartMealActivity extends AppCompatActivity  {
     }
     /**
      * ビューにタッチイベントのリスナーを登録します。
+     * @param width テーブルの幅
+     * @param height テーブルの高さ
      */
-    private void setTouchImageListener() {
+    private void setTouchImageListener(int width, int height) {
+
         for (ImageView dragView : foods) {
             // タッチイベントを登録
             DragViewListener listener = new DragViewListener(dragView);
+            listener.setRange(width, height);
             dragView.setOnTouchListener(listener);
         }
     }
@@ -157,10 +161,17 @@ public class StartMealActivity extends AppCompatActivity  {
         super.finish();
     }
 
-    /**
-     * いただきますボタンタップ時のイベント処理
-     * @param view
-     */
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+
+        FrameLayout layout = (FrameLayout)findViewById(R.id.table);
+        setTouchImageListener(layout.getWidth(), layout.getHeight());
+    }
+        /**
+         * いただきますボタンタップ時のイベント処理
+         * @param view
+         */
     public void onStartButtonTapped(View view) {
         // いただきますタップ禁止
         Button btnS = (Button)this.findViewById(R.id.btnStart);

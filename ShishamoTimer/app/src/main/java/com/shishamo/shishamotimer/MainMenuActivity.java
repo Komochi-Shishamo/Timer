@@ -26,10 +26,8 @@ public class MainMenuActivity extends AppCompatActivity {
         Intent intent = new Intent(this, StartMealActivity.class);
         startActivity(intent);
 
-        // 一方通行にするため自分は終わる
-        finish();
-        //// Activity詰める
-        //ActivityStack.stackHistory(this);
+        // Activity詰める
+        ActivityStack.stackHistory(this);
     }
 
     /**

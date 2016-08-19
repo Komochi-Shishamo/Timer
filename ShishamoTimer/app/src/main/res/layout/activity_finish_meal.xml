@@ -8,37 +8,38 @@
     tools:context="com.shishamo.shishamotimer.meal.FinishMealActivity">
 
     <TextView
-        android:layout_width="fill_parent"
-        android:layout_height="0dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:id="@+id/resultLabel"
         android:textSize="36dp"
         android:textAlignment="center"
-        android:textColor="@android:color/holo_red_dark"
-        android:layout_weight="1" />
+        android:textColor="@android:color/holo_red_dark" />
 
     <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:id="@+id/imageView"
         android:layout_centerInParent="true"
-        android:layout_weight="3"
-        android:layout_gravity="center" />
+        android:scaleType="fitCenter"
+        android:layout_gravity="center"
+        android:adjustViewBounds="true"
+        android:layout_weight="1" />
 
     <Button
         android:layout_width="wrap_content"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:text="@string/stamp"
         android:id="@+id/stampBtn"
         android:enabled="true"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_gravity="bottom|center"
-        android:layout_weight="0.5"
         android:nestedScrollingEnabled="false"
         android:onClick="onStampButtonTapped"
         android:background="@drawable/button_stateful"
         android:textColor="@android:color/primary_text_dark"
-        android:layout_marginBottom="10dp" />
+        android:layout_marginBottom="10dp"
+        android:textSize="26dp" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/btnBack"
@@ -46,10 +47,10 @@
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/fab_margin"
         android:src="@android:drawable/ic_lock_power_off"
-        android:layout_gravity="bottom|right"
         app:backgroundTint="@color/colorPrimary"
         android:adjustViewBounds="true"
-        android:onClick="onBtnEndTapped" />
+        android:onClick="onBtnEndTapped"
+        android:layout_gravity="right" />
 
 
 </LinearLayout>

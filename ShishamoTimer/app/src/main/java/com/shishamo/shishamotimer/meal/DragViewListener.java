@@ -1,5 +1,6 @@
 package com.shishamo.shishamotimer.meal;
 
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
@@ -14,6 +15,9 @@ public class DragViewListener implements View.OnTouchListener {
     // ドラッグ中の移動量
     private int preX;
     private int preY;
+    // ドラッグ範囲
+    private int right = 0;
+    private int bottom = 0;
 
     /**
      * コンストラクタ
@@ -23,6 +27,15 @@ public class DragViewListener implements View.OnTouchListener {
         this.dragView = dragView;
     }
 
+    /**
+     * ビューのドラッグ範囲を決める幅と高さを設定する
+     * @param width
+     * @param height
+     */
+    public void setRange(int width, int height) {
+        this.right = width - dragView.getWidth();
+        this.bottom = height - dragView.getHeight();
+    }
     /**
      * タッチイベント
      * @param view
@@ -41,9 +54,13 @@ public class DragViewListener implements View.OnTouchListener {
                 int left = dragView.getLeft() + (x - preX);
                 int top = dragView.getTop() + (y - preY);
 
-                // Viewを移動する
-                dragView.layout(left, top, left + dragView.getWidth(), top
-                        + dragView.getHeight());
+                //Log.d("onTouch","ACTION_MOVE: left="+left+", top="+top);
+
+                if (left > 0 && top > 0 && left <= this.right && top <= this.bottom) {
+                    // FrameLayoutの範囲内のみViewを移動する
+                    dragView.layout(left, top, left + dragView.getWidth(), top
+                            + dragView.getHeight());
+                }
                 break;
         }
 
