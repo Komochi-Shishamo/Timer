@@ -15,6 +15,7 @@ import java.util.Date;
 import java.util.List;
 
 import io.realm.Realm;
+import io.realm.RealmConfiguration;
 import io.realm.RealmQuery;
 
 /**
@@ -50,12 +51,12 @@ public class StampActivity extends AppCompatActivity {
 
         mGridView = (GridView) findViewById(R.id.stampList);
 
+        RealmConfiguration realmConfig = new RealmConfiguration.Builder(this).build();
         // テーブル構造など変更があった場合のテーブル初期化←1回だけ実行。
-//        RealmConfiguration realmConfig = new RealmConfiguration.Builder(this).build();
-//        realm.deleteRealm(realmConfig);
+        //  realm.deleteRealm(realmConfig);
 
         // Realmインスタンスを生成
-        realm = Realm.getInstance(getApplicationContext());
+        realm = Realm.getInstance(realmConfig);
 
         // クエリーを作成する
         RealmQuery<StampCard> stampCardQuery = realm.where(StampCard.class).equalTo("id",id);
