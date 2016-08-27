@@ -21,6 +21,9 @@ public class FoodFactory {
     // key: FoodType, value:drawableのID
     private HashMap<FoodType, List<Integer>> foodMap_ = new HashMap<FoodType, List<Integer>>();
 
+    // リスナーを格納する
+
+
     // 食べ物タイプ
     private enum FoodType {
         // ごはんもの

@@ -1,9 +1,12 @@
 package com.shishamo.shishamotimer.meal;
 
+import android.content.Context;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
+
+import com.shishamo.shishamotimer.common.Globals;
 
 /**
  * 画像をドラッグする処理を行います。
@@ -28,15 +31,6 @@ public class DragViewListener implements View.OnTouchListener {
     }
 
     /**
-     * ビューのドラッグ範囲を決める幅と高さを設定する
-     * @param width
-     * @param height
-     */
-    public void setRange(int width, int height) {
-        this.right = width - dragView.getWidth();
-        this.bottom = height - dragView.getHeight();
-    }
-    /**
      * タッチイベント
      * @param view
      * @param event
@@ -47,6 +41,10 @@ public class DragViewListener implements View.OnTouchListener {
         // タッチしている位置取得
         int x = (int) event.getRawX();
         int y = (int) event.getRawY();
+        // 現在のテーブルサイズ取得
+        Globals globals = (Globals)Globals.gContext;
+        this.right = globals.tableWidth - dragView.getWidth();
+        this.bottom = globals.tableHeight - dragView.getHeight();
 
         switch(event.getAction()) {
             case MotionEvent.ACTION_MOVE:

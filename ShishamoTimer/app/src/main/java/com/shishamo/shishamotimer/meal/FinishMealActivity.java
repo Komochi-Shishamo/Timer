@@ -1,6 +1,7 @@
 package com.shishamo.shishamotimer.meal;
 
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -28,6 +29,9 @@ public class FinishMealActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_finish_meal);
+        // 現在の方向で固定とする
+        Configuration config = getResources().getConfiguration();
+        setRequestedOrientation(config.orientation);
     }
 
     /**

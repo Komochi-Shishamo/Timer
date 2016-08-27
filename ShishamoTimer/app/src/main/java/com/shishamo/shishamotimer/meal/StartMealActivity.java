@@ -1,8 +1,10 @@
 package com.shishamo.shishamotimer.meal;
 
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -35,6 +37,7 @@ public class StartMealActivity extends AppCompatActivity  {
     // アプリ共有変数
     Globals globals;
 
+
     /**
      * 起動時のイベント処理
      * @param savedInstanceState
@@ -45,6 +48,7 @@ public class StartMealActivity extends AppCompatActivity  {
         setContentView(R.layout.activity_start_meal);
 
         // グローバル変数の取得
+        Globals.gContext = getApplication();
         globals = (Globals)this.getApplication();
         globals.mealResultId = R.string.message_failed;
 
@@ -63,6 +67,10 @@ public class StartMealActivity extends AppCompatActivity  {
 
         // キーボードは非表示にする
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+
+        // 現在の方向で固定とする
+        Configuration config = getResources().getConfiguration();
+        setRequestedOrientation(config.orientation);
     }
 
     /**
@@ -106,20 +114,6 @@ public class StartMealActivity extends AppCompatActivity  {
         // 順番をシャッフルする
         Collections.shuffle(foods);
     }
-    /**
-     * ビューにタッチイベントのリスナーを登録します。
-     * @param width テーブルの幅
-     * @param height テーブルの高さ
-     */
-    private void setTouchImageListener(int width, int height) {
-
-        for (ImageView dragView : foods) {
-            // タッチイベントを登録
-            DragViewListener listener = new DragViewListener(dragView);
-            listener.setRange(width, height);
-            dragView.setOnTouchListener(listener);
-        }
-    }
 
     /**
      * 数字ピッカーを初期化します。
@@ -161,17 +155,37 @@ public class StartMealActivity extends AppCompatActivity  {
         super.finish();
     }
 
+    /**
+     *　画面表示の準備完了後のイベント処理
+     * @param hasFocus
+     */
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
-        super.onWindowFocusChanged(hasFocus);
-
+        // テーブルサイズ設定
         FrameLayout layout = (FrameLayout)findViewById(R.id.table);
-        setTouchImageListener(layout.getWidth(), layout.getHeight());
+        globals.tableWidth = layout.getWidth();
+        globals.tableHeight = layout.getHeight();
+        // 画像のリスナー再設定
+        setTouchImageListener();
+        super.onWindowFocusChanged(hasFocus);
     }
-        /**
-         * いただきますボタンタップ時のイベント処理
-         * @param view
-         */
+
+    /**
+     * ビューにタッチイベントのリスナーを登録します。
+     */
+    private void setTouchImageListener() {
+
+        for (ImageView dragView : foods) {
+            // タッチイベントを登録
+            DragViewListener listener = new DragViewListener(dragView);
+            dragView.setOnTouchListener(listener);
+        }
+    }
+
+    /**
+     * いただきますボタンタップ時のイベント処理
+     * @param view
+     */
     public void onStartButtonTapped(View view) {
         // いただきますタップ禁止
         Button btnS = (Button)this.findViewById(R.id.btnStart);
@@ -190,9 +204,14 @@ public class StartMealActivity extends AppCompatActivity  {
             // ごはん画像の数にあわせてTickerを計算
             tickTime = seconds / foods.size() - 1000;
         }
+        checkBox.setEnabled(false);
         mTimePicker.setEnabled(false);
 
         // タイマー開始
+        if (mEatingTimer != null) {
+            mEatingTimer.cancel();
+            mEatingTimer = null;
+        }
         mEatingTimer = new EatingCountDownTimer(seconds, tickTime, this);
         mEatingTimer.start();
     }
