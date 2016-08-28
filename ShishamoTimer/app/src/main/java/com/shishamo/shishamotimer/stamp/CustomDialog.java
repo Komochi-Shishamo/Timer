@@ -21,13 +21,20 @@ import static com.shishamo.shishamotimer.R.string;
  */
 public class CustomDialog extends DialogFragment {
 
+    // 半分達成
     private static int MID_TYPE = 1;
 
+    // GOAL達成
     private static int GOAL_TYPE = 2;
 
-    private  int message;
+    // メッセージのタイプ
+    private int messageId;
 
+    // 画像のurl
     private int imageUrl;
+
+    // スタンプ個数
+    private int num;
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -43,7 +50,7 @@ public class CustomDialog extends DialogFragment {
 
         // タイトル設定
         TextView titleView = (TextView) dialog.findViewById(id.title);
-        titleView.setText(string.DOROID_FROM);
+        titleView.setText(string.droid_from);
 
         // イメージ設定
         ImageView imageView = (ImageView) dialog.findViewById(id.imageView);
@@ -51,7 +58,14 @@ public class CustomDialog extends DialogFragment {
 
         // メッセージ設定
         TextView messageView = (TextView) dialog.findViewById(id.message);
-        messageView.setText(this.message);
+        if(messageId == 1){
+            messageView.setText(string.message_mid);
+        }else if(messageId == 2){
+            messageView.setText(string.message_goal);
+        }else if(messageId == 3){
+            messageView.setText(getString(string.message_readonly, num));
+        }
+
         messageView.setTextSize(18.0f);
 
         // OK ボタンのリスナ
@@ -72,13 +86,20 @@ public class CustomDialog extends DialogFragment {
         return dialog;
     }
 
-    public  void setType(int type){
-        if(type == 1){
+    /**
+     * メッセージのタイプで画像を振り分ける。
+     * @param type
+     * @param num
+     */
+    public  void setType(int type , int num){
+            this.messageId = type;
+            this.num = num;
+        if(messageId == 1){
             this.imageUrl = drawable.cake;
-            this.message = string.MESSAGE_MID;
-        }else if(type == 2){
+        }else if(messageId == 2){
             this.imageUrl = drawable.ginger;
-            this.message = string.MESSAGE_GOAL;
+        }else if(messageId == 3){
+            this.imageUrl = drawable.droid_eat_apple;
         }
     }
 }

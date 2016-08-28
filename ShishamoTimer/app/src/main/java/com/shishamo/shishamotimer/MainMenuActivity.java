@@ -8,6 +8,7 @@ import android.view.View;
 import com.shishamo.shishamotimer.app.AppMainActivity;
 import com.shishamo.shishamotimer.common.ActivityStack;
 import com.shishamo.shishamotimer.meal.StartMealActivity;
+import com.shishamo.shishamotimer.stamp.StampActivity;
 
 public class MainMenuActivity extends AppCompatActivity {
 
@@ -38,5 +39,18 @@ public class MainMenuActivity extends AppCompatActivity {
         // 次画面へ遷移
         Intent intent = new Intent(this, AppMainActivity.class);
         startActivity(intent);
+    }
+    /**
+     * お食事タイマーボタンタップ時のイベント処理
+     * @param view
+     */
+    public void onStampBookButtonTapped(View view) {
+        // 次画面へ遷移
+        Intent intent = new Intent(this, StampActivity.class);
+        intent.putExtra("SHOW_TYPE",1);
+        startActivity(intent);
+
+        // Activity詰める
+        ActivityStack.stackHistory(this);
     }
 }

@@ -63,6 +63,31 @@
 
         </TableRow>
 
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
+
+            <ImageButton
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:id="@+id/stampbook_Button"
+                android:scaleType="fitXY"
+                android:adjustViewBounds="true"
+                android:src="@drawable/meal_icon"
+                android:layout_column="0"
+                android:onClick="onStampBookButtonTapped" />
+
+            <TextView
+                android:text="@string/stamp_book_description"
+                android:id="@+id/textView4"
+                android:layout_column="1"
+                android:gravity="center_vertical"
+                android:autoText="false"
+                android:layout_gravity="center_vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </TableRow>
+
     </TableLayout>
 
 </RelativeLayout>
