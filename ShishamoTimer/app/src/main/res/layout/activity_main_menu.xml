@@ -73,7 +73,7 @@
                 android:id="@+id/stampbook_Button"
                 android:scaleType="fitXY"
                 android:adjustViewBounds="true"
-                android:src="@drawable/meal_icon"
+                android:src="@drawable/stamp_icon"
                 android:layout_column="0"
                 android:onClick="onStampBookButtonTapped" />
 
