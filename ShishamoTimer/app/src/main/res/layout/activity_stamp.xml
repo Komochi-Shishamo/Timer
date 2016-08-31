@@ -11,17 +11,28 @@
     tools:context=".stamp.StampActivity"
     android:weightSum="1"
     android:soundEffectsEnabled="true"
-    android:gravity="center_horizontal"
     android:onClick="onOffBtnTapped"
-    android:background="@drawable/under_sea"
-    android:baselineAligned="true">
+    android:baselineAligned="true"
+    android:id="@+id/stamp_note"
+    android:gravity="center_horizontal">
 
-    <ImageView
+    <!--<ImageView-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:id="@+id/stamp_title"-->
+        <!--android:src="@drawable/stamp_title"-->
+        <!--android:layout_marginBottom="10dp" />-->
+
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:text="@string/stampTitle"
         android:id="@+id/stamp_title"
-        android:src="@drawable/stamp_title"
-        android:layout_marginBottom="10dp" />
+        android:textStyle="bold"
+        android:singleLine="false"
+        android:paddingBottom="5dp"
+        android:textSize="20sp"
+        android:textColor="@android:color/black" />
 
     <GridView
         android:id="@+id/stampList"
@@ -30,15 +41,14 @@
         android:numColumns="4"
         android:verticalSpacing="5dp" />
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab"
+    <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/fab_margin"
-        android:src="@android:drawable/ic_lock_power_off"
-        android:layout_gravity="bottom|right"
-        app:backgroundTint="@color/colorPrimary"
-        android:adjustViewBounds="true"
-        android:onClick="onOffBtnTapped" />
+        android:id="@+id/offBtn"
+        android:onClick="onOffBtnTapped"
+        android:textColor="@android:color/primary_text_dark"
+        android:background="@drawable/button_stateful"
+        android:textSize="26sp"
+        android:layout_marginTop="10dp" />
 
 </LinearLayout>

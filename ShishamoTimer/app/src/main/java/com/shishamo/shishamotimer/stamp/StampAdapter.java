@@ -18,6 +18,7 @@ import java.util.List;
 
     private Context mContext;
     private LayoutInflater mLayoutInflater;
+    private int seasonType;
 
     // adapterにContextとLayoutInflaterを設定
     public StampAdapter(Context context) {
@@ -85,18 +86,62 @@ import java.util.List;
         if(stampType != null){
             if(stampType.intValue() == 1) {
                 if(position < 4){
-                    viewHolder.imageView.setImageResource(R.drawable.fish);
+                    if(seasonType == 1) {
+                        // 春
+                    }else if(seasonType == 2){
+                        viewHolder.imageView.setImageResource(R.drawable.fish);
+                    }else if(seasonType == 3) {
+                        viewHolder.imageView.setImageResource(R.drawable.tonbo);
+                    }else if(seasonType == 4) {
+                       // 冬
+                    }
                 }else if(position < 8){
-                    viewHolder.imageView.setImageResource(R.drawable.shell);
+                    if(seasonType == 1) {
+                        // 春
+                    }else if(seasonType == 2){
+                        viewHolder.imageView.setImageResource(R.drawable.shell);
+                    }else if(seasonType == 3) {
+                        viewHolder.imageView.setImageResource(R.drawable.ityo);
+                    }else if(seasonType == 4) {
+                        // 冬
+                    }
                 }else if(position < 12) {
-                    viewHolder.imageView.setImageResource(R.drawable.jellyfish);
+                    if(seasonType == 1) {
+                        // 春
+                    }else if(seasonType == 2){
+                        viewHolder.imageView.setImageResource(R.drawable.jellyfish);
+                    }else if(seasonType == 3) {
+                        viewHolder.imageView.setImageResource(R.drawable.donguri);
+                    }else if(seasonType == 4) {
+                        // 冬
+                    }
                 }else if(position < 16){
-                    viewHolder.imageView.setImageResource(R.drawable.crab);
+                    if(seasonType == 1) {
+                        // 春
+                    }else if(seasonType == 2){
+                        viewHolder.imageView.setImageResource(R.drawable.crab);
+                    }else if(seasonType == 3) {
+                        viewHolder.imageView.setImageResource(R.drawable.momiji);
+                    }else if(seasonType == 4) {
+                        // 冬
+                    }
                 }else{
-                    viewHolder.imageView.setImageResource(R.drawable.starfish);
+                    if(seasonType == 1) {
+                        // 春
+                    }else if(seasonType == 2){
+                        viewHolder.imageView.setImageResource(R.drawable.starfish);
+                    }else if(seasonType == 3) {
+                        viewHolder.imageView.setImageResource(R.drawable.kuri);
+                    }else if(seasonType == 4) {
+                        // 冬
+                    }
                 }
             }
         }
         return convertView;
+    }
+
+    public void setSeason(int type) {
+        this.seasonType = type;
     }
 }

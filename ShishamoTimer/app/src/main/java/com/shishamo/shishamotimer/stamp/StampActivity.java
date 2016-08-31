@@ -5,12 +5,16 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
 import android.view.View;
+import android.widget.Button;
 import android.widget.GridView;
+import android.widget.LinearLayout;
 
+import com.shishamo.shishamotimer.MainMenuActivity;
 import com.shishamo.shishamotimer.R;
 import com.shishamo.shishamotimer.common.ActivityStack;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -48,16 +52,28 @@ public class StampActivity extends AppCompatActivity {
 
     private Realm realm;
 
+    private int showType;
+
+    private int seasonType;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_stamp);
-
+        LinearLayout baseLayout = (LinearLayout) findViewById(R.id.stamp_note);
+        Button offBtn = (Button) findViewById(R.id.offBtn);
+        setTheme(baseLayout);
         Intent intent = getIntent();
 
         // idが設定されない場合は1で作成←将来的には入力チェック必要
         long id = intent.getLongExtra("ID",1);
-        int showType = intent.getIntExtra("SHOW_TYPE",0);
+        showType = intent.getIntExtra("SHOW_TYPE",0);
+
+        if(showType == 0){
+            offBtn.setText(R.string.messageFinished);
+        }else{
+            offBtn.setText(R.string.button_label_back);
+        }
 
         mGridView = (GridView) findViewById(R.id.stampList);
 
@@ -99,8 +115,12 @@ public class StampActivity extends AppCompatActivity {
             realm.commitTransaction();
         }
 
-        // 最新のスタンプ個数を取得　←　あえて再取得　←　後で書き直す
-        Number viewMax = stampCardQuery.findFirst().getStampNo();
+        Number viewMax = 0;
+
+        if (_stampCard != null) {
+            // 最新のスタンプ個数を取得　←　あえて再取得　←　後で書き直す
+            viewMax = stampCardQuery.findFirst().getStampNo();
+        }
 
         // 表示用データリスト作成
         List<Integer> viewList = new ArrayList<>();
@@ -114,10 +134,12 @@ public class StampActivity extends AppCompatActivity {
 
         // Adapterを作成、データリストを設定
         StampAdapter stampAdapter = new StampAdapter(this);
+        stampAdapter.setSeason(seasonType);
         stampAdapter.setData(viewList);
 
         // gridviewにadapterを設定
         mGridView.setAdapter(stampAdapter);
+
 
         if(showType == 0) {
             // スタンプカードの個数によりメッセージを出力
@@ -132,6 +154,25 @@ public class StampActivity extends AppCompatActivity {
             callAlert(READ_ONLY,viewMax.intValue());
         }
 
+    }
+
+    private void setTheme(LinearLayout baseLayout) {
+        Calendar cal = Calendar.getInstance();
+        int month = cal.get(Calendar.MONTH) + 1;
+
+        if (month > 2 && month < 6) {
+            // 春
+        } else if (month > 6 && month < 9) {
+            // 夏
+            baseLayout.setBackgroundResource(R.drawable.under_sea);
+            seasonType = 2;
+        } else if (month > 9 && month < 12) {
+            // 秋
+            baseLayout.setBackgroundResource(R.drawable.aki);
+            seasonType = 3;
+        } else if (month < 3 || month == 12) {
+            // 冬
+        }
     }
 
     /**
@@ -157,12 +198,18 @@ public class StampActivity extends AppCompatActivity {
      * @param view
      */
     public void onOffBtnTapped(View view){
-        // Activity詰める
-        ActivityStack.stackHistory(this);
-        // Activity全削除
-        ActivityStack.removeHistory();
+        if(showType == 0) {
+            // Activity詰める
+            ActivityStack.stackHistory(this);
+            // Activity全削除
+            ActivityStack.removeHistory();
+        }else{
+            Intent intent = new Intent(this, MainMenuActivity.class);
+            startActivity(intent);
+            finish();
+        }
     }
-    
+
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event){
         if(keyCode != KeyEvent.KEYCODE_BACK){
