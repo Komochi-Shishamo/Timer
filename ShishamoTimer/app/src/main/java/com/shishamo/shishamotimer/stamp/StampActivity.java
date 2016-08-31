@@ -162,11 +162,11 @@ public class StampActivity extends AppCompatActivity {
 
         if (month > 2 && month < 6) {
             // 春
-        } else if (month > 6 && month < 9) {
+        } else if (month > 5 && month < 9) {
             // 夏
             baseLayout.setBackgroundResource(R.drawable.under_sea);
             seasonType = 2;
-        } else if (month > 9 && month < 12) {
+        } else if (month > 8 && month < 12) {
             // 秋
             baseLayout.setBackgroundResource(R.drawable.aki);
             seasonType = 3;
