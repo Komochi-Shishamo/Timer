@@ -47,10 +47,8 @@ public class StartMealActivity extends AppCompatActivity  {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start_meal);
 
-        // グローバル変数の取得
-        Globals.gContext = getApplication();
-        globals = (Globals)this.getApplication();
-        globals.mealResultId = R.string.message_failed;
+        // ディスプレイの向きは初期起動時の方向で固定とする
+        globals = (Globals)getApplication();
 
         // 効果音の準備をします。
         player = MealSoundPlayer.getInstance();
@@ -67,10 +65,6 @@ public class StartMealActivity extends AppCompatActivity  {
 
         // キーボードは非表示にする
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
-
-        // 現在の方向で固定とする
-        Configuration config = getResources().getConfiguration();
-        setRequestedOrientation(config.orientation);
     }
 
     /**
@@ -131,6 +125,15 @@ public class StartMealActivity extends AppCompatActivity  {
             valueSet[(i / step) - 1] = getString(format, i);
         }
         picker.setDisplayedValues(valueSet);
+    }
+
+    /**
+     * 設定変更時（自動回転など）のイベント
+     * @param newConfig
+     */
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
     }
 
     /**

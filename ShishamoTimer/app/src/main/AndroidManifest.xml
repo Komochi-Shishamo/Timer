@@ -17,15 +17,16 @@
             </intent-filter>
         </activity>
         <activity android:name=".app.AppMainActivity"
-            android:windowSoftInputMode="stateAlwaysHidden" />
+            android:windowSoftInputMode="stateAlwaysHidden"
+            android:configChanges="orientation|screenSize"/>
         <activity android:name=".app.AppNoticeActivity"></activity>
         <activity
             android:name=".meal.StartMealActivity"
             android:windowSoftInputMode="stateAlwaysHidden"
-            />
+            android:configChanges="orientation|screenSize"/>
         <activity
             android:name=".meal.FinishMealActivity"
-            />
+            android:configChanges="orientation|screenSize"/>
         <activity android:name=".stamp.StampActivity" />
     </application>
 

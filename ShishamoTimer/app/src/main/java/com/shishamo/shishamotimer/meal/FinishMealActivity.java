@@ -29,9 +29,6 @@ public class FinishMealActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_finish_meal);
-        // 現在の方向で固定とする
-        Configuration config = getResources().getConfiguration();
-        setRequestedOrientation(config.orientation);
     }
 
     /**
@@ -86,6 +83,15 @@ public class FinishMealActivity extends AppCompatActivity {
         AnimationDrawable frameAnimation = (AnimationDrawable) img.getBackground();
         // アニメーションの開始
         frameAnimation.start();
+    }
+
+    /**
+     * 設定変更時（自動回転など）のイベント
+     * @param newConfig
+     */
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
     }
 
     /**

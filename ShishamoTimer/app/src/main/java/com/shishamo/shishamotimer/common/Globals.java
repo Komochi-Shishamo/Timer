@@ -15,7 +15,7 @@ public class Globals extends Application {
     // 食事タイマーの結果
     public int mealResultId;
 
-    // テーブルサイズ
+    // 食事タイマーのテーブルサイズ
     public int tableHeight;
     public int tableWidth;
 }
