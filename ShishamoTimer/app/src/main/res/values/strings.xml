@@ -15,9 +15,9 @@
     <string name="min_for_debug">デバッグ用に30秒にする</string>
     <string name="stamp">スタンプもらう</string>
     <string name="ok">ok</string>
-    <string name="message_mid">10個たまったね！\nもうすこし！</string>
-    <string name="message_goal">20個たまったね！\nおめでとう！</string>
-    <string name="message_readonly">今は%1$d個だよ！</string>
+    <string name="message_mid">10こたまったね！\nもうすこし！</string>
+    <string name="message_goal">20こたまったね！\nおめでとう！</string>
+    <string name="message_readonly">いまは%1$dこだよ！</string>
     <string name="droid_from">ドロイドくんより</string>
     <string name="appTimerDescription">こどもに使わせる時間を入力してください。</string>
     <string name="start">スタート</string>
