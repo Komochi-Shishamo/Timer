@@ -27,7 +27,8 @@
         <activity
             android:name=".meal.FinishMealActivity"
             android:configChanges="orientation|screenSize"/>
-        <activity android:name=".stamp.StampActivity" />
+        <activity android:name=".stamp.StampActivity"
+            android:configChanges="orientation|screenSize"/>
     </application>
 
 </manifest>
