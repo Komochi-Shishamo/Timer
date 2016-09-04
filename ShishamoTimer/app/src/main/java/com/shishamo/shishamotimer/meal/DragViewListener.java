@@ -43,8 +43,10 @@ public class DragViewListener implements View.OnTouchListener {
         int y = (int) event.getRawY();
         // 現在のテーブルサイズ取得
         Globals globals = (Globals)Globals.gContext;
-        this.right = globals.tableWidth - dragView.getWidth();
-        this.bottom = globals.tableHeight - dragView.getHeight();
+        this.right = globals.tableView.getWidth() - dragView.getWidth();
+        this.bottom = globals.tableView.getHeight() - dragView.getHeight();
+
+        //Log.d("onTouch","TABLE_VIEW: Width="+globals.tableView.getWidth()+", Height="+globals.tableView.getHeight());
 
         switch(event.getAction()) {
             case MotionEvent.ACTION_MOVE:

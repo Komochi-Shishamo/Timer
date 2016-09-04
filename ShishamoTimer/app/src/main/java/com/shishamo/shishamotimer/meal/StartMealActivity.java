@@ -55,6 +55,7 @@ public class StartMealActivity extends AppCompatActivity  {
 
         // 食べ物画像の準備をします。
         loadImage();
+        setTouchImageListener();
 
         // タイマー時刻の初期化
         mTimePicker = (NumberPicker) findViewById(R.id.numberPicker);
@@ -74,6 +75,48 @@ public class StartMealActivity extends AppCompatActivity  {
     protected void onResume() {
         super.onResume();
         player.loadSound(getApplicationContext());
+    }
+
+    /**
+     * 一時停止
+     */
+    @Override
+    protected void onPause() {
+        super.onPause();
+    }
+
+    /**
+     *　画面表示の準備完了後のイベント処理
+     * @param hasFocus
+     */
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        // テーブルビュー設定
+        globals.tableView = (FrameLayout)findViewById(R.id.table);
+        super.onWindowFocusChanged(hasFocus);
+    }
+
+    /**
+     * 設定変更時（自動回転など）のイベント
+     * @param newConfig
+     */
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+    }
+
+    /**
+     * アクティビティ終了
+     */
+    @Override
+    public void finish() {
+        if (mEatingTimer != null) {
+            mEatingTimer.cancel();
+            mEatingTimer = null;
+        }
+        player.stopSound();
+        player.unloadSounds();
+        super.finish();
     }
 
     /**
@@ -126,58 +169,10 @@ public class StartMealActivity extends AppCompatActivity  {
         }
         picker.setDisplayedValues(valueSet);
     }
-
-    /**
-     * 設定変更時（自動回転など）のイベント
-     * @param newConfig
-     */
-    @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-    }
-
-    /**
-     * 一時停止
-     */
-    @Override
-    protected void onPause() {
-        super.onPause();
-    }
-
-    /**
-     * アクティビティ終了
-     */
-    @Override
-    public void finish() {
-        if (mEatingTimer != null) {
-            mEatingTimer.cancel();
-            mEatingTimer = null;
-        }
-        player.stopSound();
-        player.unloadSounds();
-        super.finish();
-    }
-
-    /**
-     *　画面表示の準備完了後のイベント処理
-     * @param hasFocus
-     */
-    @Override
-    public void onWindowFocusChanged(boolean hasFocus) {
-        // テーブルサイズ設定
-        FrameLayout layout = (FrameLayout)findViewById(R.id.table);
-        globals.tableWidth = layout.getWidth();
-        globals.tableHeight = layout.getHeight();
-        // 画像のリスナー再設定
-        setTouchImageListener();
-        super.onWindowFocusChanged(hasFocus);
-    }
-
     /**
      * ビューにタッチイベントのリスナーを登録します。
      */
     private void setTouchImageListener() {
-
         for (ImageView dragView : foods) {
             // タッチイベントを登録
             DragViewListener listener = new DragViewListener(dragView);
@@ -238,8 +233,14 @@ public class StartMealActivity extends AppCompatActivity  {
         GoNextIntent();
     }
 
+    /**
+     * 停止ボタンタップ時のイベント処理
+     * @param view
+     */
     public void onStopButtonTapped(View view) {
+        // TODO 次のレベルアップで機能追加
     }
+
     /**
      * 次の画面へ遷移します。
      */

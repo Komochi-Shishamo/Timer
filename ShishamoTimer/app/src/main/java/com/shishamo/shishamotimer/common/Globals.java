@@ -2,6 +2,7 @@ package com.shishamo.shishamotimer.common;
 
 import android.app.Application;
 import android.content.Context;
+import android.widget.FrameLayout;
 
 /**
  * アプリ共有クラスです。
@@ -16,6 +17,5 @@ public class Globals extends Application {
     public int mealResultId;
 
     // 食事タイマーのテーブルサイズ
-    public int tableHeight;
-    public int tableWidth;
+    public FrameLayout tableView;
 }
