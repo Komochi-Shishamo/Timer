@@ -7,73 +7,79 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
+    android:scrollbarAlwaysDrawVerticalTrack="true"
     tools:context="com.shishamo.shishamotimer.app.AppMainActivity">
 
-    <LinearLayout
-        android:orientation="vertical"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_centerVertical="true"
-        android:id="@+id/container">
+        android:layout_height="match_parent">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/appTimerDescription"
-            android:id="@+id/textView" />
-
-        <TableLayout
+        <LinearLayout
+            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent"
+            android:layout_centerVertical="true"
+            android:id="@+id/container">
 
-            <TableRow
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/appTimerDescription"
+                android:id="@+id/textView" />
+
+            <TableLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="wrap_content">
 
-                <NumberPicker
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <NumberPicker
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/numberPicker"
+                        android:layout_column="1" />
+                </TableRow>
+
+            </TableLayout>
+
+
+            <TableLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <Button
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/numberPicker"
-                    android:layout_column="1" />
-            </TableRow>
+                    android:text="@string/start"
+                    android:id="@+id/startButton"
+                    android:layout_below="@+id/textView"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true" />
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/stop"
+                    android:id="@+id/stopButton"
+                    android:layout_gravity="center_horizontal"
+                    android:enabled="false" />
+            </TableLayout>
 
-        </TableLayout>
 
-
-        <TableLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <Button
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/start"
-                android:id="@+id/startButton"
-                android:layout_below="@+id/textView"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true" />
-            <Button
+                android:text="@string/statusStopped"
+                android:id="@+id/appTimerStatus"
+                android:layout_gravity="left" />
+
+            <CheckBox
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/stop"
-                android:id="@+id/stopButton"
-                android:layout_gravity="center_horizontal"
-                android:enabled="false" />
-        </TableLayout>
+                android:text="デバッグ用 10秒で通知"
+                android:id="@+id/debugCheckBox"
+                android:checked="false" />
 
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/statusStopped"
-            android:id="@+id/appTimerStatus"
-            android:layout_gravity="left" />
-
-        <CheckBox
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="デバッグ用 10秒で通知"
-            android:id="@+id/debugCheckBox"
-            android:checked="false" />
-
-    </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
 </RelativeLayout>

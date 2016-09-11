@@ -7,87 +7,92 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
+    android:scrollbarAlwaysDrawVerticalTrack="true"
     tools:context="com.shishamo.shishamotimer.MainMenuActivity">
 
-    <TableLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true">
+        android:layout_height="match_parent">
 
-        <TableRow
+        <TableLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true">
 
-            <ImageButton
-                android:layout_width="120dp"
-                android:layout_height="120dp"
-                android:id="@+id/meal_button"
-                android:scaleType="fitXY"
-                android:adjustViewBounds="true"
-                android:src="@drawable/meal_icon"
-                android:layout_column="0"
-                android:onClick="onMealButtonTapped" />
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
-            <TextView
-                android:text="@string/meal_timer_description"
-                android:id="@+id/textView"
-                android:layout_column="1"
-                android:gravity="center_vertical"
-                android:autoText="false"
-                android:layout_gravity="center_vertical" />
-        </TableRow>
+                <ImageButton
+                    android:layout_width="120dp"
+                    android:layout_height="120dp"
+                    android:id="@+id/meal_button"
+                    android:scaleType="fitXY"
+                    android:adjustViewBounds="true"
+                    android:src="@drawable/meal_icon"
+                    android:layout_column="0"
+                    android:onClick="onMealButtonTapped" />
 
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+                <TextView
+                    android:text="@string/meal_timer_description"
+                    android:id="@+id/textView"
+                    android:layout_column="1"
+                    android:gravity="center_vertical"
+                    android:autoText="false"
+                    android:layout_gravity="center_vertical" />
+            </TableRow>
 
-            <ImageButton
-                android:layout_width="120dp"
-                android:layout_height="120dp"
-                android:id="@+id/app_button"
-                android:scaleType="fitXY"
-                android:adjustViewBounds="true"
-                android:src="@drawable/app_icon"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:onClick="onAppButtonTapped"/>
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/app_timer_description"
-                android:id="@+id/textView2"
-                android:layout_column="1"
-                android:layout_gravity="center_vertical" />
+                <ImageButton
+                    android:layout_width="120dp"
+                    android:layout_height="120dp"
+                    android:id="@+id/app_button"
+                    android:scaleType="fitXY"
+                    android:adjustViewBounds="true"
+                    android:src="@drawable/app_icon"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:onClick="onAppButtonTapped"/>
 
-        </TableRow>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/app_timer_description"
+                    android:id="@+id/textView2"
+                    android:layout_column="1"
+                    android:layout_gravity="center_vertical" />
 
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" >
+            </TableRow>
 
-            <ImageButton
-                android:layout_width="120dp"
-                android:layout_height="120dp"
-                android:id="@+id/stampbook_Button"
-                android:scaleType="fitXY"
-                android:adjustViewBounds="true"
-                android:src="@drawable/stamp_icon"
-                android:layout_column="0"
-                android:onClick="onStampBookButtonTapped" />
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" >
 
-            <TextView
-                android:text="@string/stamp_book_description"
-                android:id="@+id/textView4"
-                android:layout_column="1"
-                android:gravity="center_vertical"
-                android:autoText="false"
-                android:layout_gravity="center_vertical"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-        </TableRow>
+                <ImageButton
+                    android:layout_width="120dp"
+                    android:layout_height="120dp"
+                    android:id="@+id/stampbook_Button"
+                    android:scaleType="fitXY"
+                    android:adjustViewBounds="true"
+                    android:src="@drawable/stamp_icon"
+                    android:layout_column="0"
+                    android:onClick="onStampBookButtonTapped" />
 
-    </TableLayout>
+                <TextView
+                    android:text="@string/stamp_book_description"
+                    android:id="@+id/textView4"
+                    android:layout_column="1"
+                    android:gravity="center_vertical"
+                    android:autoText="false"
+                    android:layout_gravity="center_vertical"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </TableRow>
 
+        </TableLayout>
+    </ScrollView>
 </RelativeLayout>

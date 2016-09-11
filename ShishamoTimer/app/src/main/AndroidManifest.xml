@@ -19,7 +19,9 @@
         <activity android:name=".app.AppMainActivity"
             android:windowSoftInputMode="stateAlwaysHidden"
             android:configChanges="orientation|screenSize"/>
-        <activity android:name=".app.AppNoticeActivity"></activity>
+        <activity android:name=".app.AppNoticeActivity"
+            android:windowSoftInputMode="stateAlwaysHidden"
+            android:configChanges="orientation|screenSize"/>
         <activity
             android:name=".meal.StartMealActivity"
             android:windowSoftInputMode="stateAlwaysHidden"
