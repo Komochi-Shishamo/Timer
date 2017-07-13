@@ -1,10 +1,12 @@
 package com.shishamo.shishamotimer.meal;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -17,29 +19,32 @@ import com.shishamo.shishamotimer.R;
 import com.shishamo.shishamotimer.common.ActivityStack;
 import com.shishamo.shishamotimer.common.Globals;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
 /**
  * 食事タイマーのメイン処理
  */
 public class StartMealActivity extends AppCompatActivity  {
-    // 使用する画像
-    private List<ImageView> foods = new ArrayList<ImageView>();
+
+    // ログ出力用TAG
+    private static final String TAG = StartMealActivity.class.getSimpleName();
+
+    // メッセージキー：タイマー終了通知
+    public static final String MESSENGER_SERVICE_KEY = "stopService";
+    public static final String ACTION_TIMER_STOPPED = "timerAction";
+
     // 時間ピッカー
     private NumberPicker mTimePicker = null;
-    // タイマー
-    private EatingCountDownTimer mEatingTimer = null;
-    private int counter = -1;
+
     // 効果音再生
     private MealSoundPlayer player;
+
     // アプリ共有変数
     Globals globals;
 
+    // タイマーレシーバ
+    private MealBroadcastReceiver mReceiver;
 
     /**
-     * 起動時のイベント処理
+     * アクティビティ生成
      * @param savedInstanceState
      */
     @Override
@@ -55,7 +60,6 @@ public class StartMealActivity extends AppCompatActivity  {
 
         // 食べ物画像の準備をします。
         loadImage();
-        setTouchImageListener();
 
         // タイマー時刻の初期化
         mTimePicker = (NumberPicker) findViewById(R.id.numberPicker);
@@ -66,10 +70,16 @@ public class StartMealActivity extends AppCompatActivity  {
 
         // キーボードは非表示にする
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+
+        // タイマーレシーバ登録
+        mReceiver = new MealBroadcastReceiver();
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(ACTION_TIMER_STOPPED);
+        registerReceiver(mReceiver, filter);
     }
 
     /**
-     *
+     * foreground状態
      */
     @Override
     protected void onResume() {
@@ -110,74 +120,18 @@ public class StartMealActivity extends AppCompatActivity  {
      */
     @Override
     public void finish() {
-        if (mEatingTimer != null) {
-            mEatingTimer.cancel();
-            mEatingTimer = null;
-        }
         player.stopSound();
         player.unloadSounds();
         super.finish();
     }
 
     /**
-     * 画像を動的にランダム表示します。
+     * アクティビティ破棄
      */
-    private void loadImage() {
-        FoodFactory factory = FoodFactory.getInstance();
-        // ごはん
-        ImageView img = (ImageView)findViewById(R.id.rice);
-        img.setImageResource(factory.getRice());
-        foods.add(img);
-        // 主菜
-        img = (ImageView) findViewById(R.id.main);
-        img.setImageResource(factory.getMain());
-        foods.add(img);
-
-        // 副菜
-        img = (ImageView) findViewById(R.id.fukusai);
-        img.setImageResource(factory.getFukusai());
-        foods.add(img);
-
-        // 汁物
-        img = (ImageView) findViewById(R.id.soup);
-        img.setImageResource(factory.getSoup());
-        foods.add(img);
-
-        // サラダ系
-        img = (ImageView) findViewById(R.id.salada);
-        img.setImageResource(factory.getSalada());
-        foods.add(img);
-
-        // 順番をシャッフルする
-        Collections.shuffle(foods);
-    }
-
-    /**
-     * 数字ピッカーを初期化します。
-     * @param picker
-     * @param min
-     * @param max
-     * @param step
-     * @param format
-     */
-    private void setNumberPicker(NumberPicker picker, int min, int max, int step, int format) {
-        picker.setMinValue(min / step - 1);
-        picker.setMaxValue((max / step) - 1);
-        String[] valueSet = new String[max / min];
-        for (int i = min; i <= max; i += step) {
-            valueSet[(i / step) - 1] = getString(format, i);
-        }
-        picker.setDisplayedValues(valueSet);
-    }
-    /**
-     * ビューにタッチイベントのリスナーを登録します。
-     */
-    private void setTouchImageListener() {
-        for (ImageView dragView : foods) {
-            // タッチイベントを登録
-            DragViewListener listener = new DragViewListener(dragView);
-            dragView.setOnTouchListener(listener);
-        }
+    @Override
+    public void onDestroy() {
+        unregisterReceiver(mReceiver);
+        super.onDestroy();
     }
 
     /**
@@ -194,24 +148,19 @@ public class StartMealActivity extends AppCompatActivity  {
 
         // 入力時間とTicker設定（デフォルト30秒・5秒おき）
         int seconds = 30 * 1000;
-        int tickTime = 5000;
+        int intervalMillis = 5000;
         CheckBox checkBox = (CheckBox) findViewById(R.id.chkDebug);
         if (!checkBox.isChecked()) {
             // Debugオフの場合は設定した時間
             seconds = (mTimePicker.getValue() + 1) * 5 * 60 * 1000;
             // ごはん画像の数にあわせてTickerを計算
-            tickTime = seconds / foods.size() - 1000;
+            intervalMillis = seconds / 5 - 1000;
         }
         checkBox.setEnabled(false);
         mTimePicker.setEnabled(false);
 
-        // タイマー開始
-        if (mEatingTimer != null) {
-            mEatingTimer.cancel();
-            mEatingTimer = null;
-        }
-        mEatingTimer = new EatingCountDownTimer(seconds, tickTime, this);
-        mEatingTimer.start();
+        // タイマーサービス開始
+        MealTimerService.scheduleJob(this, intervalMillis);
     }
 
     /**
@@ -219,18 +168,8 @@ public class StartMealActivity extends AppCompatActivity  {
      * @param view
      */
     public void onEndButtonTapped(View view) {
-        // タイマーをとめる
-        if (mEatingTimer != null) {
-            mEatingTimer.cancel();
-        }
-        mEatingTimer = null;
-
-        // 結果画面へ
-        if (globals == null) {
-            globals = (Globals) this.getApplication();
-        }
-        globals.mealResultId = R.string.message_succeed;
-        GoNextIntent();
+        // 次画面へ遷移する
+        goNextIntent(R.string.message_succeed);
     }
 
     /**
@@ -239,32 +178,90 @@ public class StartMealActivity extends AppCompatActivity  {
      */
     public void onStopButtonTapped(View view) {
         // TODO 次のレベルアップで機能追加
+        // タイマーを止める
+        MealTimerService.cancelJob(this);
+        // 画面を初期表示する
     }
 
     /**
-     * 次の画面へ遷移します。
+     * 次画面へ遷移します。
+     *
+     * @param result 結果
      */
-    public void GoNextIntent() {
-        // 次画面へ遷移
+    private void goNextIntent(int result) {
+        // タイマーを止める
+        MealTimerService.cancelJob(this);
+
+        // 結果画面へ
+        if (globals == null) {
+            globals = (Globals) this.getApplication();
+        }
+        globals.mealResultId = result;
         Intent intent = new Intent(this, FinishMealActivity.class);
         startActivity(intent);
 
         // Activity詰める
         ActivityStack.stackHistory(this);
     }
+
     /**
-     * 次に対象となる画像を取得します。
-     * @return
+     * たべもの画像を読み込んでランダム表示して、
+     * タッチイベントを登録します。
      */
-    public ImageView getNextFoods() {
-        counter++;
-        return this.foods.get(counter);
+    private void loadImage() {
+        FoodFactory factory = FoodFactory.getInstance();
+        // ごはん
+        ImageView img = (ImageView)findViewById(R.id.rice);
+        factory.loadFood(FoodType.RICE, img);
+
+        // 主菜
+        img = (ImageView) findViewById(R.id.main);
+        factory.loadFood(FoodType.MAIN, img);
+
+        // 副菜
+        img = (ImageView) findViewById(R.id.fukusai);
+        factory.loadFood(FoodType.FUKUSAI, img);
+
+        // 汁物
+        img = (ImageView) findViewById(R.id.soup);
+        factory.loadFood(FoodType.SOUP, img);
+
+        // サラダ系
+        img = (ImageView) findViewById(R.id.salada);
+        factory.loadFood(FoodType.SALADA, img);
     }
 
     /**
-     * キラキラ効果音を再生します。
+     * 数字ピッカーを初期化します。
+     * @param picker 数字ピッカー
+     * @param min 最小値
+     * @param max 最大値
+     * @param step カウントアップする値
+     * @param format 表示書式
      */
-    public void playKirakira() {
-        player.playKirakira();
+    private void setNumberPicker(NumberPicker picker, int min, int max, int step, int format) {
+        picker.setMinValue(min / step - 1);
+        picker.setMaxValue((max / step) - 1);
+        String[] valueSet = new String[max / min];
+        for (int i = min; i <= max; i += step) {
+            valueSet[(i / step) - 1] = getString(format, i);
+        }
+        picker.setDisplayedValues(valueSet);
+    }
+
+    /**
+     * お食事タイマーサービスの通信を行うブロードキャストレシーバクラス
+     */
+    private class MealBroadcastReceiver extends BroadcastReceiver {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            // 終了通知を受け取る
+            boolean stopped = intent.getExtras().getBoolean(MESSENGER_SERVICE_KEY);
+            if (stopped) {
+                // タイマー終了時のみ処理
+                goNextIntent(R.string.message_failed);
+            }
+        }
     }
 }
