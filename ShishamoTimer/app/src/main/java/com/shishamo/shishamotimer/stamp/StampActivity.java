@@ -54,7 +54,7 @@ public class StampActivity extends AppCompatActivity {
 
     private int showType;
 
-    private int seasonType;
+    private SeasonType seasonType;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,7 +77,9 @@ public class StampActivity extends AppCompatActivity {
 
         mGridView = (GridView) findViewById(R.id.stampList);
 
-        RealmConfiguration realmConfig = new RealmConfiguration.Builder(this).build();
+        // Realm 初期化
+        Realm.init(getApplicationContext());
+        RealmConfiguration realmConfig = new RealmConfiguration.Builder().build();
         // テーブル構造など変更があった場合のテーブル初期化←1回だけ実行。
         //  realm.deleteRealm(realmConfig);
 
@@ -162,22 +164,24 @@ public class StampActivity extends AppCompatActivity {
 
         if (month > 2 && month < 6) {
             // 春
+            seasonType = SeasonType.SPRING;
         } else if (month > 5 && month < 9) {
             // 夏
             baseLayout.setBackgroundResource(R.drawable.under_sea);
-            seasonType = 2;
+            seasonType = SeasonType.SUMMER;
         } else if (month > 8 && month < 12) {
             // 秋
             baseLayout.setBackgroundResource(R.drawable.aki);
-            seasonType = 3;
+            seasonType = SeasonType.SUMMER;
         } else if (month < 3 || month == 12) {
             // 冬
+            seasonType = SeasonType.WINTER;
         }
     }
 
     /**
      * カスタムダイアログ呼び出し
-     * @param type
+     * @param type メッセージタイプ
      */
     private void callAlert(int type, int num) {
         CustomDialog customDialog = new CustomDialog();
@@ -187,15 +191,16 @@ public class StampActivity extends AppCompatActivity {
 
     /**
      * テーブルデータをクリアする。(今は未使用メソッド)
-     * @param target
+     * @param target 対象テーブル
      */
     public void clear(RealmQuery<StampCard> target){
-        target.findAll().clear();
+        //TODO 非推奨となったのでコメントアウト
+        //target.findAll().clear();
     }
 
     /**
      * Activityのスタックリストを削除
-     * @param view
+     * @param view 対象
      */
     public void onOffBtnTapped(View view){
         if(showType == 0) {
@@ -211,11 +216,7 @@ public class StampActivity extends AppCompatActivity {
     }
 
     @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event){
-        if(keyCode != KeyEvent.KEYCODE_BACK){
-            return super.onKeyDown(keyCode,event);
-        }else{
-            return false;
-        }
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        return keyCode != KeyEvent.KEYCODE_BACK && super.onKeyDown(keyCode, event);
     }
 }

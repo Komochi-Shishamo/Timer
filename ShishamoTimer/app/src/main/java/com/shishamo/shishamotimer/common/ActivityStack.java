@@ -40,7 +40,7 @@ public class ActivityStack {
 
     /**
      * Activityをリストに詰める
-     * @param stack
+     * @param stack Activity
      */
     public static void stackHistory(Activity stack){
         stackList.add(stack);

@@ -46,8 +46,6 @@ public class DragViewListener implements View.OnTouchListener {
         this.right = globals.tableView.getWidth() - dragView.getWidth();
         this.bottom = globals.tableView.getHeight() - dragView.getHeight();
 
-        //Log.d("onTouch","TABLE_VIEW: Width="+globals.tableView.getWidth()+", Height="+globals.tableView.getHeight());
-
         switch(event.getAction()) {
             case MotionEvent.ACTION_MOVE:
                 // 今回イベントでのView移動先の位置

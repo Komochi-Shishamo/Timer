@@ -1,5 +1,7 @@
 package com.shishamo.shishamotimer.meal;
 
+import android.widget.ImageView;
+
 import com.shishamo.shishamotimer.R;
 
 import java.util.ArrayList;
@@ -13,30 +15,16 @@ import java.util.List;
  * シングルトンクラスです。
  * Created by rika on 2016/06/25.
  */
-public class FoodFactory {
+class FoodFactory {
     // 唯一のインスタンス
     private static FoodFactory instance_ = new FoodFactory();
 
-    // 食べ物画像を格納する
+    // 全ての食べ物画像を格納する
     // key: FoodType, value:drawableのID
-    private HashMap<FoodType, List<Integer>> foodMap_ = new HashMap<FoodType, List<Integer>>();
+    private HashMap<FoodType, List<Integer>> foodMap_ = new HashMap<>();
 
-    // リスナーを格納する
-
-
-    // 食べ物タイプ
-    private enum FoodType {
-        // ごはんもの
-        RICE,
-        // 主菜
-        MAIN,
-        // 汁物
-        SOUP,
-        // 副菜
-        FUKUSAI,
-        // サラダ系
-        SALADA
-    }
+    // 現在表示している食べ物画像を格納する
+    private List<Food> foods = new ArrayList<>();
 
     /**
      * コンストラクタ
@@ -64,7 +52,7 @@ public class FoodFactory {
                 R.drawable.food_yasai_nimono,
                 R.drawable.food_kuro_nimame)));
         // サラダ系
-        foodMap_.put(FoodType.SALADA, new ArrayList<>(Arrays.asList(
+        foodMap_.put(FoodType.SALAD, new ArrayList<>(Arrays.asList(
                 R.drawable.food_potato_sald,
                 R.drawable.food_salad,
                 R.drawable.food_tsukemono)));
@@ -72,9 +60,9 @@ public class FoodFactory {
 
     /**
      * 唯一のインスタンス取得
-     * @return
+     * @return 唯一のインスタンス
      */
-    public static FoodFactory getInstance() {
+    static FoodFactory getInstance() {
         if (instance_ == null) {
             instance_ = new FoodFactory();
         }
@@ -82,52 +70,57 @@ public class FoodFactory {
     }
 
     /**
-     * ランダムにごはんの画像IDを取得します。
-     * @return
+     * 指定の種類の食べ物画像を読み込んで情報を格納します。
+     * 画像にタッチイベントを登録します。
+     *
+     * @param type 種類
+     * @param img 画像
      */
-    public int getRice() {
-        List<Integer> list = foodMap_.get(FoodType.RICE);
+    void loadFood(FoodType type, ImageView img) {
+        // ランダムに取得した画像をビューに表示する
+        int id = getFood(type);
+        img.setImageResource(id);
+        Food food = new Food(id, type, img, true);
+        foods.add(food);
+        // タッチイベントを登録
+        DragViewListener listener = new DragViewListener(img);
+        img.setOnTouchListener(listener);
+    }
+
+    /**
+     * 表示されている食べ物画像をランダムに返します。
+     *
+     * @return ランダムに取得した表示画像の情報。ない場合はnull
+     */
+    Food getViewableFood(){
+        Collections.shuffle(foods);
+        for (Food food: foods) {
+            if (food.isViewable()) {
+                return food;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * 表示されている食べ物がないかどうかを返します。
+     *
+     * @return true - なし, false - あり
+     */
+    boolean isNoFood() {
+        return getViewableFood() == null;
+    }
+
+    /**
+     * ランダムに指定の種類の画像IDを取得します。
+     *
+     * @param type 種類
+     * @return 画像ID
+     */
+    private int getFood(FoodType type) {
+        List<Integer> list = foodMap_.get(type);
         Collections.shuffle(list);
         return list.get(0);
     }
 
-    /**
-     * ランダムに主菜の画像IDを取得します。
-     * @return
-     */
-    public int getMain() {
-        List<Integer> list = foodMap_.get(FoodType.MAIN);
-        Collections.shuffle(list);
-        return list.get(0);
-    }
-
-    /**
-     * ランダムに副菜の画像IDを取得します。
-     * @return
-     */
-    public int getFukusai() {
-        List<Integer> list = foodMap_.get(FoodType.FUKUSAI);
-        Collections.shuffle(list);
-        return list.get(0);
-    }
-
-    /**
-     * ランダムに汁物の画像IDを取得します。
-     * @return
-     */
-    public int getSoup() {
-        List<Integer> list = foodMap_.get(FoodType.SOUP);
-        Collections.shuffle(list);
-        return list.get(0);
-    }
-
-    /**
-     * ランダムにサラダ系の画像IDを取得します。
-     * @return
-     */
-    public int getSalada() {
-        List<Integer> list = foodMap_.get(FoodType.SALADA);
-        Collections.shuffle(list);
-        return list.get(0);
-    }
 }

@@ -44,21 +44,15 @@ public class MealSoundPlayer {
     @SuppressWarnings("deprecation")
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     private MealSoundPlayer() {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
-            // API Level 21以降は非推奨
-            mSoundPool = new SoundPool(3,  AudioManager.STREAM_MUSIC, 0);
-        }
-        else {
-            AudioAttributes attr = new AudioAttributes.Builder()
-                    .setUsage(AudioAttributes.USAGE_MEDIA)
-                    .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
-                    .build();
+        AudioAttributes attr = new AudioAttributes.Builder()
+                .setUsage(AudioAttributes.USAGE_MEDIA)
+                .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
+                .build();
 
-            mSoundPool = new SoundPool.Builder()
-                    .setAudioAttributes(attr)
-                    .setMaxStreams(3)
-                    .build();
-        }
+        mSoundPool = new SoundPool.Builder()
+                .setAudioAttributes(attr)
+                .setMaxStreams(3)
+                .build();
         available = false;
         mSoundPool.setOnLoadCompleteListener(new SoundPool.OnLoadCompleteListener() {
             /**
