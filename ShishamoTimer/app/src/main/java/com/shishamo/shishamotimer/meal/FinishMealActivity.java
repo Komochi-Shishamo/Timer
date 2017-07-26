@@ -125,6 +125,9 @@ public class FinishMealActivity extends AppCompatActivity {
      * @param view
      */
     public void onBtnEndTapped(View view) {
+        // 再生中の効果音を止める
+        MealSoundPlayer.getInstance().stopSound();
+
         // Activity終了
         ActivityStack.stackHistory(this);
         ActivityStack.removeHistory();

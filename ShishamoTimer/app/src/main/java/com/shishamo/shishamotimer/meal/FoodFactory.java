@@ -15,13 +15,13 @@ import java.util.List;
  * シングルトンクラスです。
  * Created by rika on 2016/06/25.
  */
-public class FoodFactory {
+class FoodFactory {
     // 唯一のインスタンス
     private static FoodFactory instance_ = new FoodFactory();
 
     // 全ての食べ物画像を格納する
     // key: FoodType, value:drawableのID
-    private HashMap<FoodType, List<Integer>> foodMap_ = new HashMap<FoodType, List<Integer>>();
+    private HashMap<FoodType, List<Integer>> foodMap_ = new HashMap<>();
 
     // 現在表示している食べ物画像を格納する
     private List<Food> foods = new ArrayList<>();
@@ -52,7 +52,7 @@ public class FoodFactory {
                 R.drawable.food_yasai_nimono,
                 R.drawable.food_kuro_nimame)));
         // サラダ系
-        foodMap_.put(FoodType.SALADA, new ArrayList<>(Arrays.asList(
+        foodMap_.put(FoodType.SALAD, new ArrayList<>(Arrays.asList(
                 R.drawable.food_potato_sald,
                 R.drawable.food_salad,
                 R.drawable.food_tsukemono)));
@@ -60,9 +60,9 @@ public class FoodFactory {
 
     /**
      * 唯一のインスタンス取得
-     * @return
+     * @return 唯一のインスタンス
      */
-    public static FoodFactory getInstance() {
+    static FoodFactory getInstance() {
         if (instance_ == null) {
             instance_ = new FoodFactory();
         }
@@ -76,7 +76,7 @@ public class FoodFactory {
      * @param type 種類
      * @param img 画像
      */
-    public void loadFood(FoodType type, ImageView img) {
+    void loadFood(FoodType type, ImageView img) {
         // ランダムに取得した画像をビューに表示する
         int id = getFood(type);
         img.setImageResource(id);
@@ -92,7 +92,7 @@ public class FoodFactory {
      *
      * @return ランダムに取得した表示画像の情報。ない場合はnull
      */
-    public Food getViewableFood(){
+    Food getViewableFood(){
         Collections.shuffle(foods);
         for (Food food: foods) {
             if (food.isViewable()) {
@@ -100,6 +100,15 @@ public class FoodFactory {
             }
         }
         return null;
+    }
+
+    /**
+     * 表示されている食べ物がないかどうかを返します。
+     *
+     * @return true - なし, false - あり
+     */
+    boolean isNoFood() {
+        return getViewableFood() == null;
     }
 
     /**

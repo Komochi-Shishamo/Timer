@@ -3,119 +3,94 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:bootstrap="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
-    tools:context="com.shishamo.shishamotimer.meal.StartMealActivity">
+    tools:context="com.shishamo.shishamotimer.meal.StartMealActivity"
+    android:orientation="vertical">
 
     <LinearLayout
-        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1">
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_weight="0.5"
+        android:weightSum="1">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:orientation="vertical"
-            android:layout_weight="1.5"
-            android:gravity="center_horizontal">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:id="@+id/textView"
-                android:singleLine="false"
-                android:text="@string/mealTimerDescription"
-                android:gravity="center_vertical"
-                android:layout_weight="0.5" />
-
-            <NumberPicker
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/numberPicker"
-                android:layout_weight="0.5" />
-
-        </LinearLayout>
-        <CheckBox
-            android:layout_width="wrap_content"
+        <TextView
+            android:id="@+id/txtClock"
+            android:layout_width="65dp"
             android:layout_height="wrap_content"
-            android:text="@string/min_for_debug"
-            android:id="@+id/chkDebug"
-            android:checked="false"
-            android:clickable="true"
-            android:layout_gravity="center_horizontal" />
-        <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="0dp"
-                android:orientation="horizontal"
-                android:layout_weight="1"
-            android:layout_gravity="center_horizontal">
+            android:layout_gravity="center_vertical"
+            android:layout_marginRight="30dp"
+            android:onClick="onClockTapped"
+            android:textSize="28sp"
+            android:layout_weight="0.05" />
 
-                <Button
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:text="@string/start_eating"
-                    android:id="@+id/btnStart"
-                    android:enabled="true"
-                    android:textStyle="bold"
-                    android:onClick="onStartButtonTapped"
-                    android:layout_gravity="center"
-                    android:layout_margin="5dp"
-                    android:background="@drawable/button_stateful"
-                    android:textColor="@android:color/primary_text_dark" />
+        <Button
+            android:id="@+id/btnStart"
+            android:layout_width="75dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="3dp"
+            android:layout_gravity="center_vertical"
+            android:drawableLeft="@android:drawable/ic_media_play"
+            android:drawablePadding="0dp"
+            android:background="@drawable/button_stateful"
+            android:textColor="@android:color/primary_text_dark"
+            android:onClick="onStartButtonTapped" />
 
-                <Button
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:text="@string/end_eating"
-                    android:id="@+id/btnEnd"
-                    android:textStyle="bold"
-                    android:enabled="false"
-                    android:onClick="onEndButtonTapped"
-                    android:layout_gravity="center"
-                    android:visibility="visible"
-                    android:layout_margin="5dp"
-                    android:background="@drawable/button_stateful"
-                    android:textColor="@android:color/primary_text_dark" />
-            </LinearLayout>
+        <Button
+            android:id="@+id/btnEnd"
+            android:layout_width="78dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="3dp"
+            android:layout_gravity="center_vertical"
+            android:visibility="gone"
+            android:drawableLeft="@android:drawable/ic_media_pause"
+            android:drawablePadding="0dp"
+            android:background="@drawable/button_stateful"
+            android:textColor="@android:color/primary_text_dark"
+            android:onClick="onEndButtonTapped"/>
     </LinearLayout>
 
     <FrameLayout
+        android:id="@+id/table"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="2"
-        android:id="@+id/table"
         android:background="@drawable/wood">
 
         <ImageView
-            android:layout_width="100dp"
-            android:layout_height="100dp"
             android:id="@+id/rice"
-            android:layout_gravity="left|center_vertical" />
-
-        <ImageView
             android:layout_width="100dp"
             android:layout_height="100dp"
+            android:layout_gravity="left|center_vertical"
+            android:contentDescription="@string/rice"/>
+
+        <ImageView
             android:id="@+id/main"
-            android:layout_gravity="center" />
-
-        <ImageView
             android:layout_width="100dp"
             android:layout_height="100dp"
+            android:layout_gravity="center|bottom"
+            android:contentDescription="@string/maindish"/>
+
+        <ImageView
             android:id="@+id/soup"
-            android:layout_gravity="right|center_vertical" />
-
-        <ImageView
             android:layout_width="100dp"
             android:layout_height="100dp"
-            android:id="@+id/salada"
-            android:layout_gravity="right|top" />
+            android:layout_gravity="right|bottom"
+            android:contentDescription="@string/soup"/>
 
         <ImageView
+            android:id="@+id/salad"
             android:layout_width="100dp"
             android:layout_height="100dp"
+            android:layout_gravity="right|top"
+            android:contentDescription="@string/salad"/>
+
+        <ImageView
             android:id="@+id/fukusai"
-            android:layout_gravity="center_horizontal|top" />
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_gravity="center_horizontal|top"
+            android:contentDescription="@string/fukusai"/>
     </FrameLayout>
 </LinearLayout>
 

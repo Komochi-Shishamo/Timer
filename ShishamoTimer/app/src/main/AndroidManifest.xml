@@ -2,10 +2,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.shishamo.shishamotimer">
 
-    <uses-sdk
-        android:minSdkVersion="21"
-        android:targetSdkVersion="21"/>
-
     <application
         android:name=".common.Globals"
         android:allowBackup="true"

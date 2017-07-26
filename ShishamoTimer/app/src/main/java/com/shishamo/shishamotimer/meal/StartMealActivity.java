@@ -1,5 +1,6 @@
 package com.shishamo.shishamotimer.meal;
 
+import android.app.TimePickerDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -7,17 +8,24 @@ import android.content.IntentFilter;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Gravity;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.NumberPicker;
+import android.widget.TextView;
+import android.widget.TimePicker;
+import android.widget.Toast;
 
 import com.shishamo.shishamotimer.R;
 import com.shishamo.shishamotimer.common.ActivityStack;
+import com.shishamo.shishamotimer.common.DateUtil;
 import com.shishamo.shishamotimer.common.Globals;
+
+import java.util.Date;
+
+import static android.app.TimePickerDialog.*;
 
 /**
  * 食事タイマーのメイン処理
@@ -31,11 +39,20 @@ public class StartMealActivity extends AppCompatActivity  {
     public static final String MESSENGER_SERVICE_KEY = "stopService";
     public static final String ACTION_TIMER_STOPPED = "timerAction";
 
-    // 時間ピッカー
-    private NumberPicker mTimePicker = null;
-
     // 効果音再生
-    private MealSoundPlayer player;
+    private MealSoundPlayer mPlayer;
+
+    // Toastの背景画像
+    private ImageView mToastView;
+
+    // タイマー設定ダイアログ
+    private TimePickerDialog mTimeDialog;
+
+    // タイマー設定値
+    private Date mDateTime;
+
+    // タイマー表示テキスト
+    private TextView mtxtClock;
 
     // アプリ共有変数
     Globals globals;
@@ -45,7 +62,7 @@ public class StartMealActivity extends AppCompatActivity  {
 
     /**
      * アクティビティ生成
-     * @param savedInstanceState
+     * @param savedInstanceState アクティビティ保存状態
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,21 +72,22 @@ public class StartMealActivity extends AppCompatActivity  {
         // ディスプレイの向きは初期起動時の方向で固定とする
         globals = (Globals)getApplication();
 
-        // 効果音の準備をします。
-        player = MealSoundPlayer.getInstance();
+        // 効果音の準備
+        mPlayer = MealSoundPlayer.getInstance();
 
-        // 食べ物画像の準備をします。
+        // 画像の準備
         loadImage();
 
-        // タイマー時刻の初期化
-        mTimePicker = (NumberPicker) findViewById(R.id.numberPicker);
-        setNumberPicker(mTimePicker, 5, 60, 5, R.string.timeFormat);
-
-        // 初期値は30分に設定
-        mTimePicker.setValue(5);
-
-        // キーボードは非表示にする
+        // キーボードは非表示kk
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+
+        // タイマー初期値設定
+        mtxtClock = (TextView)findViewById(R.id.txtClock);
+        mDateTime = DateUtil.getSysDate();
+        mtxtClock.setText(DateUtil.format(mDateTime, "kk:mm"));
+
+        // タイマー設定ダイアログ生成
+        createTimeDialog();
 
         // タイマーレシーバ登録
         mReceiver = new MealBroadcastReceiver();
@@ -84,7 +102,7 @@ public class StartMealActivity extends AppCompatActivity  {
     @Override
     protected void onResume() {
         super.onResume();
-        player.loadSound(getApplicationContext());
+        mPlayer.loadSound(getApplicationContext());
     }
 
     /**
@@ -97,7 +115,7 @@ public class StartMealActivity extends AppCompatActivity  {
 
     /**
      *　画面表示の準備完了後のイベント処理
-     * @param hasFocus
+     * @param hasFocus フォーカス状態
      */
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
@@ -108,7 +126,7 @@ public class StartMealActivity extends AppCompatActivity  {
 
     /**
      * 設定変更時（自動回転など）のイベント
-     * @param newConfig
+     * @param newConfig 変更後の定義
      */
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
@@ -120,8 +138,8 @@ public class StartMealActivity extends AppCompatActivity  {
      */
     @Override
     public void finish() {
-        player.stopSound();
-        player.unloadSounds();
+        mPlayer.stopSound();
+        mPlayer.unloadSounds();
         super.finish();
     }
 
@@ -135,37 +153,50 @@ public class StartMealActivity extends AppCompatActivity  {
     }
 
     /**
+     * 時計タップ時のイベント処理
+     * @param view 対象ビュー
+     */
+    public void onClockTapped(View view) {
+        mTimeDialog.show();
+    }
+
+    /**
      * いただきますボタンタップ時のイベント処理
-     * @param view
+     * @param view 対象ビュー
      */
     public void onStartButtonTapped(View view) {
-        // いただきますタップ禁止
+        // 指定時間までの秒数を計算
+        Date nowTime = DateUtil.getSysDate();
+        long seconds = mDateTime.getTime() - nowTime.getTime();
+        if (seconds < 60000) {
+            // 過去や1分未満は実行不可とする
+            showToast(R.string.warning_passedtime);
+            updateClock(nowTime);
+            return;
+        }
+        // 時計利用不可
+        mtxtClock.setEnabled(false);
+        // スタートボタン非表示
         Button btnS = (Button)this.findViewById(R.id.btnStart);
-        btnS.setEnabled(false);
+        btnS.setVisibility(View.GONE);
         // ごちそうさまタップ可能
         Button btnE = (Button)this.findViewById(R.id.btnEnd);
-        btnE.setEnabled(true);
+        btnE.setVisibility(View.VISIBLE);
 
-        // 入力時間とTicker設定（デフォルト30秒・5秒おき）
-        int seconds = 30 * 1000;
-        int intervalMillis = 5000;
-        CheckBox checkBox = (CheckBox) findViewById(R.id.chkDebug);
-        if (!checkBox.isChecked()) {
-            // Debugオフの場合は設定した時間
-            seconds = (mTimePicker.getValue() + 1) * 5 * 60 * 1000;
-            // ごはん画像の数にあわせてTickerを計算
-            intervalMillis = seconds / 5 - 1000;
-        }
-        checkBox.setEnabled(false);
-        mTimePicker.setEnabled(false);
+
+        // ごはん画像の数にあわせて警告間隔を計算
+        int intervalMillis = (int)seconds / 5;
 
         // タイマーサービス開始
         MealTimerService.scheduleJob(this, intervalMillis);
+
+        // スタートトースト表示
+        showToast(R.string.message_start);
     }
 
     /**
      * ごちそうさまボタンタップ時のイベント処理
-     * @param view
+     * @param view 対象ビュー
      */
     public void onEndButtonTapped(View view) {
         // 次画面へ遷移する
@@ -174,38 +205,18 @@ public class StartMealActivity extends AppCompatActivity  {
 
     /**
      * 停止ボタンタップ時のイベント処理
-     * @param view
+     * @param view 対象ビュー
      */
     public void onStopButtonTapped(View view) {
         // TODO 次のレベルアップで機能追加
         // タイマーを止める
         MealTimerService.cancelJob(this);
-        // 画面を初期表示する
+        // 画面を閉じる
+        finish();
     }
 
     /**
-     * 次画面へ遷移します。
-     *
-     * @param result 結果
-     */
-    private void goNextIntent(int result) {
-        // タイマーを止める
-        MealTimerService.cancelJob(this);
-
-        // 結果画面へ
-        if (globals == null) {
-            globals = (Globals) this.getApplication();
-        }
-        globals.mealResultId = result;
-        Intent intent = new Intent(this, FinishMealActivity.class);
-        startActivity(intent);
-
-        // Activity詰める
-        ActivityStack.stackHistory(this);
-    }
-
-    /**
-     * たべもの画像を読み込んでランダム表示して、
+     * たべもの画像を読み込んでランダム表示し、
      * タッチイベントを登録します。
      */
     private void loadImage() {
@@ -227,26 +238,82 @@ public class StartMealActivity extends AppCompatActivity  {
         factory.loadFood(FoodType.SOUP, img);
 
         // サラダ系
-        img = (ImageView) findViewById(R.id.salada);
-        factory.loadFood(FoodType.SALADA, img);
+        img = (ImageView) findViewById(R.id.salad);
+        factory.loadFood(FoodType.SALAD, img);
+
+        // Toastの背景画像
     }
 
     /**
-     * 数字ピッカーを初期化します。
-     * @param picker 数字ピッカー
-     * @param min 最小値
-     * @param max 最大値
-     * @param step カウントアップする値
-     * @param format 表示書式
+     * タイマー設定するダイアログを生成します。
      */
-    private void setNumberPicker(NumberPicker picker, int min, int max, int step, int format) {
-        picker.setMinValue(min / step - 1);
-        picker.setMaxValue((max / step) - 1);
-        String[] valueSet = new String[max / min];
-        for (int i = min; i <= max; i += step) {
-            valueSet[(i / step) - 1] = getString(format, i);
+    private void createTimeDialog() {
+        // 現在表示している時間で初期表示
+        final int hour = DateUtil.getHour(mDateTime);
+        final int minute = DateUtil.getMinute(mDateTime);
+
+        mTimeDialog = new TimePickerDialog(this, new OnTimeSetListener() {
+            @Override
+            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                Date updateTime = DateUtil.updateDateTime(mDateTime, hourOfDay, minute);
+                Date sysDate = DateUtil.getSysDate();
+                if (sysDate.compareTo(updateTime) >= 0) {
+                    // 現在時刻より過去は不可
+                    showToast(R.string.warning_passedtime);
+                    updateClock(sysDate);
+                } else {
+                    // 設定した時刻で更新
+                    updateClock(updateTime);
+                }
+            }
+        }, hour, minute, true);
+    }
+
+    /**
+     * 指定の文言をトースト表示します。
+     * @param msgId StringリソースID
+     */
+    private void showToast(int msgId) {
+        String message = getResources().getString(msgId);
+        if (message.isEmpty()) {
+            // 文字列が取得できない場合は表示しない
+            return;
         }
-        picker.setDisplayedValues(valueSet);
+        Toast toast = Toast.makeText(this, message, Toast.LENGTH_LONG);
+        toast.setGravity(Gravity.CENTER, 0,0);
+        toast.show();
+    }
+
+    /**
+     * タイマー時計を指定の時間で再表示します。
+     *
+     * @param time 表示する時間
+     */
+    private void updateClock(Date time) {
+        mDateTime = time;
+        mtxtClock.setText(DateUtil.format(mDateTime, "kk:mm"));
+    }
+
+    /**
+     * 次画面へ遷移します。
+     *
+     * @param result 結果
+     */
+    private void goNextIntent(int result) {
+        // タイマーを止める
+        MealTimerService.cancelJob(this);
+        mPlayer.stopSound();
+
+        // 結果画面へ
+        if (globals == null) {
+            globals = (Globals) this.getApplication();
+        }
+        globals.mealResultId = result;
+        Intent intent = new Intent(this, FinishMealActivity.class);
+        startActivity(intent);
+
+        // Activity詰める
+        ActivityStack.stackHistory(this);
     }
 
     /**

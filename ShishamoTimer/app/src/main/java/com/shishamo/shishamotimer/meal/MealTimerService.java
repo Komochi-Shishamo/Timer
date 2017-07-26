@@ -28,11 +28,11 @@ public class MealTimerService extends JobService {
     /**
      * 一定間隔で実行するスケジュールを登録します。
      *
-     * @param context
+     * @param context コンテキスト
      * @param intervalMillis 実行間隔（ミリ秒）
      */
     public static void scheduleJob(Context context, long intervalMillis) {
-        JobScheduler scheduler = (JobScheduler) context.getSystemService(context.JOB_SCHEDULER_SERVICE);
+        JobScheduler scheduler = (JobScheduler) context.getSystemService(JOB_SCHEDULER_SERVICE);
         JobInfo jobInho = new JobInfo.Builder(PERIODIC_JOB_ID,
                 new ComponentName(context, MealTimerService.class))
                 .setPeriodic(intervalMillis)
@@ -46,11 +46,11 @@ public class MealTimerService extends JobService {
     /**
      * 　一定期間で実行するスケジュールをキャンセルします。
      *
-     * @param context
+     * @param context コンテキスト
      */
     public static void cancelJob(Context context) {
         Log.d(TAG, "MealTimerService Created.");
-        JobScheduler scheduler = (JobScheduler) context.getSystemService(context.JOB_SCHEDULER_SERVICE);
+        JobScheduler scheduler = (JobScheduler) context.getSystemService(JOB_SCHEDULER_SERVICE);
         scheduler.cancel(PERIODIC_JOB_ID);
     }
 
@@ -75,8 +75,8 @@ public class MealTimerService extends JobService {
     /**
      * Jobを実行します。
      *
-     * @param params
-     * @return
+     * @param params Jobパラメータ
+     * @return true - Jobを実行する
      */
     @Override
     public boolean onStartJob(final JobParameters params) {
@@ -101,7 +101,7 @@ public class MealTimerService extends JobService {
     /**
      * Jobをキャンセルします。
      *
-     * @param params
+     * @param params Jobパラメータ
      * @return 再スケジューリングする場合はtrue、再スケジューリングしないはfalse
      */
     @Override
@@ -119,7 +119,7 @@ public class MealTimerService extends JobService {
     private boolean doJob() {
         Food food = FoodFactory.getInstance().getViewableFood();
         if (food == null) {
-            // 画像が取得できない場合はタイムオーバーなのでJobをキャンセルする
+            // 本来はここを通らないはずだが念のため
             return false;
         }
 
@@ -133,7 +133,8 @@ public class MealTimerService extends JobService {
 
         // 非表示状態に設定
         food.setViewable(false);
-        return true;
+        // これで最後の食べ物の場合は終了する
+        return !(FoodFactory.getInstance().isNoFood());
     }
 
     /**

@@ -3,7 +3,7 @@ package com.shishamo.shishamotimer.meal;
 /**
  * 食べ物タイプ
  */
-public enum FoodType {
+enum FoodType {
         // ごはんもの
         RICE,
         // 主菜
@@ -13,5 +13,5 @@ public enum FoodType {
         // 副菜
         FUKUSAI,
         // サラダ系
-        SALADA
+        SALAD
 }
